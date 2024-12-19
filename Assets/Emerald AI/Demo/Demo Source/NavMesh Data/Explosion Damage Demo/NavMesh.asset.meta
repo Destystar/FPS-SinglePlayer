@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: ca3b29b3b488a7943bf6e22dc60a70de
+NativeFormatImporter:
+  externalObjects: {}
+  mainObjectFileID: 23800000
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 268519
+  packageName: Emerald AI 2024
+  packageVersion: 1.2.5
+  assetPath: Assets/Emerald AI/Demo/Demo Source/NavMesh Data/Explosion Damage Demo/NavMesh.asset
+  uploadId: 704830
