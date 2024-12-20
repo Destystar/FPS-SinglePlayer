@@ -10,10 +10,10 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 59f5fc06806945df8a985b4b99c57863, type: 3}
-  m_Name: AA_Rifle_idle
+  m_Name: AA_Rifle_Idle
   m_EditorClassIdentifier: 
-  rigAsset: {fileID: 11400000, guid: 225ad07d8cad1b7479e2c775f6daeffd, type: 2}
-  clip: {fileID: -203655887218126122, guid: 8230767c9bcb5484e8ba4420c3a9e7ae, type: 3}
+  rigAsset: {fileID: 11400000, guid: 749eac0419eefca48ac5e049050b3156, type: 2}
+  clip: {fileID: 7400000, guid: a9571dabdf500e941abdbe0aa44b6a08, type: 2}
   mask: {fileID: 0}
   overrideMask: {fileID: 0}
   isAdditive: 0
