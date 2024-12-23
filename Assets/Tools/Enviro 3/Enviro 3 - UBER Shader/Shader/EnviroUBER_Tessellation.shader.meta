@@ -1,0 +1,30 @@
+fileFormatVersion: 2
+guid: d0cc0b962a16de54397519d974928332
+ShaderImporter:
+  externalObjects: {}
+  defaultTextures:
+  - _MainTex: {instanceID: 0}
+  - _BumpMap: {instanceID: 0}
+  - _BaseMask: {instanceID: 0}
+  - _EmissionMap: {instanceID: 0}
+  - _Mask: {instanceID: 0}
+  - _DetailAlbedoMap: {instanceID: 0}
+  - _DetailNormalMap: {instanceID: 0}
+  - _GlobalNormal: {instanceID: 0}
+  - _WaveNormal: {fileID: 2800000, guid: 42447ab0039b0974fb08cc177686d3e7, type: 3}
+  - _DetailMask: {instanceID: 0}
+  - _SnowMask: {fileID: 2800000, guid: 22975a93be597bb46be23512335912bf, type: 3}
+  - _SnowNormal: {fileID: 2800000, guid: 2b00eddc57fe1314486a5f40cddaa470, type: 3}
+  - _SnowAlbedo: {fileID: 2800000, guid: 63dba5a337ea04c4b840c0c3c80c4fd4, type: 3}
+  nonModifiableTextures: []
+  preprocessorOverride: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 280825
+  packageName: Enviro 3 - UBER Shader
+  packageVersion: 1.1.1
+  assetPath: Assets/Enviro 3 - UBER Shader/Shader/EnviroUBER_Tessellation.shader
+  uploadId: 696756

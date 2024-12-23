@@ -1,0 +1,6 @@
+Thanks for buying the Enviro 3 - Additional Weather Pack!
+
+Open your Enviro 3 scene and click on Window -> Enviro -> Additional Weather Setup.
+A window opens where you only need to click on the button to add all weather types.
+
+Please note that this pack requires Enviro 3.0.7a+!

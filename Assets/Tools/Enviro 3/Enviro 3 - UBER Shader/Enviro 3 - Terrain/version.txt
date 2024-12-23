@@ -1,0 +1,19 @@
+Enviro 3 - Terrain Shader
+
+v1.0.0
+Release Version
+
+------------------------------------------------------------------------
+v 1.1.0
+* Added "per layer" controls.
+* Improved overall layer blending (height -> linear).
+* Improved and optimized overall shader.
+* Fixed texture array generation in builds. (For example for runtime generated terrains)
+* Fixed all gc-allocation from Terrain Manager.
+* Fixed reversed UVs issue.
+* Fixed per-pixel normal in instanced rendering.
+* Fixed terrain holes in HDRP.
+
+v1.1.1
+* Fixed possible null error when creating new materials though the inspector.
+* Fixed 8+ splat support.

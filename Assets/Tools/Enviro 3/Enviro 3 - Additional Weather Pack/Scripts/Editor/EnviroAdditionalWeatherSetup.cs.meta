@@ -1,0 +1,18 @@
+fileFormatVersion: 2
+guid: f380b79e7d993ca4e8b5eb07a268e00a
+MonoImporter:
+  externalObjects: {}
+  serializedVersion: 2
+  defaultReferences: []
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 264132
+  packageName: Enviro 3 - Additional Weather Pack
+  packageVersion: 1.1.0
+  assetPath: Assets/Enviro 3 - Additional Weather Pack/Scripts/Editor/EnviroAdditionalWeatherSetup.cs
+  uploadId: 675075

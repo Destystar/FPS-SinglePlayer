@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: b71111dab23815b469f582aa7bf6a1c0
+NativeFormatImporter:
+  externalObjects: {}
+  mainObjectFileID: 2100000
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 280825
+  packageName: Enviro 3 - UBER Shader
+  packageVersion: 1.1.1
+  assetPath: Assets/Enviro 3 - UBER Shader/CustomData/template.mat
+  uploadId: 696756

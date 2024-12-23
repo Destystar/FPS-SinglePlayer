@@ -1,0 +1,27 @@
+fileFormatVersion: 2
+guid: 7ae1b2e3b43c70746800bfa8f8f14123
+MonoImporter:
+  externalObjects: {}
+  serializedVersion: 2
+  defaultReferences:
+  - myTerrain: {instanceID: 0}
+  - myMaterial: {instanceID: 0}
+  - snowAlbedo: {fileID: 2800000, guid: 27b834a48f9909243ac06c6f3f8e209a, type: 3}
+  - snowNormal: {fileID: 2800000, guid: d3be6198ace0ba14cb05762000ca9853, type: 3}
+  - snowMask: {fileID: 2800000, guid: f6a1524323f57554492c86586bdea3ab, type: 3}
+  - puddleWaveNormal: {fileID: 2800000, guid: a27b6cd880f319446a44daf0b7fdb46d, type: 3}
+  - albedoArray: {instanceID: 0}
+  - normalArray: {instanceID: 0}
+  - maskArray: {instanceID: 0}
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 285621
+  packageName: Enviro 3 - Terrain Shader
+  packageVersion: 1.1.1
+  assetPath: Assets/Enviro 3 - Terrain/Scripts/EnviroTerrainManager.cs
+  uploadId: 697102

@@ -1,0 +1,12 @@
+1.1.0
+* ATTENTION: This update is not compatible with previous version. Please remove old folders before importing 1.1.0. I will try my best so this won't be needed in future anymore.
+* Added new material converter tool. This tool can convert your scene objects from standard/lit shader to Enviro UBER in two clicks!
+* Added support for Enviro effect removal zones.
+* Added new setting for height blend detail mapping to control the normal influence.
+* Added support for Unity 6 URP/HDRP 17.
+* Fixed issue with tessellation not fully deactivated when not used.
+* Improved performance when not using certain features. 
+* Improved Puddle waves, rain drops and ripples are using world space uv now.
+
+1.1.1
+* Updated URP 17 support. Please use with 6000.0.14+ now!

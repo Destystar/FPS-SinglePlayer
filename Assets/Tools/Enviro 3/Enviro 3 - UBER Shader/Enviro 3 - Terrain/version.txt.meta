@@ -1,0 +1,14 @@
+fileFormatVersion: 2
+guid: a41f9bbf5896d1c45b4733897beeb41d
+TextScriptImporter:
+  externalObjects: {}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 285621
+  packageName: Enviro 3 - Terrain Shader
+  packageVersion: 1.1.1
+  assetPath: Assets/Enviro 3 - Terrain/version.txt
+  uploadId: 697102

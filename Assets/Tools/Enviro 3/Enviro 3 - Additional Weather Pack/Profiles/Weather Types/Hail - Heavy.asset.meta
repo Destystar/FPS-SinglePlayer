@@ -1,0 +1,16 @@
+fileFormatVersion: 2
+guid: fc61aa537d6b4214794ddd3a01bfd5eb
+NativeFormatImporter:
+  externalObjects: {}
+  mainObjectFileID: 11400000
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 264132
+  packageName: Enviro 3 - Additional Weather Pack
+  packageVersion: 1.1.0
+  assetPath: Assets/Enviro 3 - Additional Weather Pack/Profiles/Weather Types/Hail
+    - Heavy.asset
+  uploadId: 675075

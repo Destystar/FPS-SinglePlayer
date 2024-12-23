@@ -1,0 +1,18 @@
+fileFormatVersion: 2
+guid: dcf13b5a3d25862429a3186037d5bf61
+MonoImporter:
+  externalObjects: {}
+  serializedVersion: 2
+  defaultReferences: []
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 285621
+  packageName: Enviro 3 - Terrain Shader
+  packageVersion: 1.1.1
+  assetPath: Assets/Enviro 3 - Terrain/Scripts/Editor/EnviroTerrainEditor.cs
+  uploadId: 697102

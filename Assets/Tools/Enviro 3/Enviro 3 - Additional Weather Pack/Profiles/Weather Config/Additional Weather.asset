@@ -1,0 +1,51 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b3ccdfb360c52f049bf71126aa74826f, type: 3}
+  m_Name: Additional Weather
+  m_EditorClassIdentifier: 
+  showModuleInspector: 1
+  showSaveLoad: 0
+  active: 1
+  Settings:
+    weatherTypes:
+    - {fileID: 11400000, guid: dd0462d0319461848b0ee0f24abc60dc, type: 2}
+    - {fileID: 11400000, guid: a53fcb87f0cf4d64891d42cea884a72a, type: 2}
+    - {fileID: 11400000, guid: f2d0b06c8f9dc1945834b87442823871, type: 2}
+    - {fileID: 11400000, guid: 5f97f08a2d9726740b597b742a4859b9, type: 2}
+    - {fileID: 11400000, guid: 662e523f15e05f249bb207dd78b6a9ee, type: 2}
+    - {fileID: 11400000, guid: 71ea823bb98c5384b80481569f092587, type: 2}
+    - {fileID: 11400000, guid: 598bcf409fd13334cabb85ca009d0d18, type: 2}
+    - {fileID: 11400000, guid: a22a8c05ebe12634bb77ad9c5f45b334, type: 2}
+    - {fileID: 11400000, guid: 84a247eb82a465a4ebd3aefb2bae3507, type: 2}
+    - {fileID: 11400000, guid: e114bf833613d9e45b762022813aa001, type: 2}
+    - {fileID: 11400000, guid: a54dc6deb86f7db4fb19f013c52d21f4, type: 2}
+    - {fileID: 11400000, guid: 0a4ae9f47758d734781a5d2823292397, type: 2}
+    - {fileID: 11400000, guid: 9f3d826e482ea664081a62cea2e76260, type: 2}
+    - {fileID: 11400000, guid: c54c628a955536c49830030a98c605f5, type: 2}
+    - {fileID: 11400000, guid: 163edba1d167b9844b25eff6f19caf18, type: 2}
+    - {fileID: 11400000, guid: 10bd3cbf9d8cd3a41b87a5046f0c55b9, type: 2}
+    - {fileID: 11400000, guid: 7a7cab9ae02aab1499bef62d8f4af4aa, type: 2}
+    - {fileID: 11400000, guid: 9c1bfd2e648b0924daaced2c2a56d14a, type: 2}
+    - {fileID: 11400000, guid: fae8bcf053377c04da25682f9b3b8ca5, type: 2}
+    - {fileID: 11400000, guid: fc61aa537d6b4214794ddd3a01bfd5eb, type: 2}
+    cloudsTransitionSpeed: 1
+    fogTransitionSpeed: 1
+    lightingTransitionSpeed: 1
+    effectsTransitionSpeed: 1
+    auroraTransitionSpeed: 1
+    environmentTransitionSpeed: 1
+    audioTransitionSpeed: 1
+  preset: {fileID: 0}
+  targetWeatherType: {fileID: 0}
+  currentZone: {fileID: 0}
+  triggerCollider: {fileID: 0}
+  triggerRB: {fileID: 0}

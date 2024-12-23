@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: cb7ee42be02027d4e89dc2c9e14d7475
+NativeFormatImporter:
+  externalObjects: {}
+  mainObjectFileID: 8574412962073106934
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 285621
+  packageName: Enviro 3 - Terrain Shader
+  packageVersion: 1.1.1
+  assetPath: Assets/Enviro 3 - Terrain/Samples/Textures/Grass/Grass.terrainlayer
+  uploadId: 697102

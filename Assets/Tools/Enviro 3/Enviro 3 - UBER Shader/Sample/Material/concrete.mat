@@ -1,0 +1,166 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!21 &2100000
+Material:
+  serializedVersion: 6
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: concrete
+  m_Shader: {fileID: 4800000, guid: d0cc0b962a16de54397519d974928332, type: 3}
+  m_ShaderKeywords: _DETAILPROCEDURALMASK_HEIGHT _ENABLE_FOG_ON_TRANSPARENT _RAIN_ON
+    _RENDERING_OPAQUE _SNOW_ON _TESSELLATION_ON
+  m_LightmapFlags: 4
+  m_EnableInstancingVariants: 0
+  m_DoubleSidedGI: 0
+  m_CustomRenderQueue: 2000
+  stringTagMap:
+    RenderType: Opaque
+  disabledShaderPasses: []
+  m_SavedProperties:
+    serializedVersion: 3
+    m_TexEnvs:
+    - _BaseMask:
+        m_Texture: {fileID: 2800000, guid: 4270c580bdd5c1d44a92977a7ee1b449, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _BumpMap:
+        m_Texture: {fileID: 2800000, guid: 0359af445b0680e469b60f1b7544fdee, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _DetailAlbedoMap:
+        m_Texture: {fileID: 2800000, guid: 1349de95ff2c59d4aa98a7f5031ad937, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _DetailMask:
+        m_Texture: {fileID: 2800000, guid: 9373250e9d2f98e47ad7d7c65d893b81, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _DetailNormalMap:
+        m_Texture: {fileID: 2800000, guid: 2bad4797d5f273648b4d026c7fc57bc9, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _EmissionMap:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _GlobalNormal:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _MainTex:
+        m_Texture: {fileID: 2800000, guid: 4804258263bbeaa49b1f77549ed72929, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _Mask:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _MetallicGlossMap:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _OcclusionMap:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _ParallaxMap:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _SnowAlbedo:
+        m_Texture: {fileID: 2800000, guid: 63dba5a337ea04c4b840c0c3c80c4fd4, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _SnowMask:
+        m_Texture: {fileID: 2800000, guid: 22975a93be597bb46be23512335912bf, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _SnowNormal:
+        m_Texture: {fileID: 2800000, guid: 2b00eddc57fe1314486a5f40cddaa470, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _WaveNormal:
+        m_Texture: {fileID: 2800000, guid: 42447ab0039b0974fb08cc177686d3e7, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _texcoord:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    m_Floats:
+    - _BumpScale: 1
+    - _CullMode: 2
+    - _CutOff: 0.5
+    - _Cutoff: 0.5
+    - _DetailHeight: 0.63
+    - _DetailHeightBlendStrength: 1
+    - _DetailMaskTiling: 1
+    - _DetailNormalInfluence: 0
+    - _DetailNormalMapScale: 1
+    - _DetailProceduralMask: 3
+    - _DetailProceduralMaskIntensity: 1.5
+    - _DetailProceduralMaskScale: 58.24
+    - _DetailThreshold: 0.26
+    - _DisplacementStrength: 0.02
+    - _DstBlend: 0
+    - _ENVIROREMOVALZONES: 0
+    - _Emission: 0
+    - _GlobalDetailNormal: 0
+    - _GlobalNormalIntensity: 1.196
+    - _GlossMapScale: 1
+    - _Glossiness: 0.5
+    - _GlossyReflections: 1
+    - _Metallic: 0
+    - _MetallicBase: 1
+    - _MetallicDetail: 0
+    - _Mode: 0
+    - _OcclusionStrength: 1
+    - _Opacity: 0
+    - _Parallax: 0.02
+    - _PuddleCoverageNoise: 0.5
+    - _PuddleIntensity: 1
+    - _PuddleWaveIntensity: 1
+    - _PuddleWaveTiling: 1
+    - _Puddles: 0
+    - _Rain: 1
+    - _RainDistanceFade: 5
+    - _RainDropIntensity: 5
+    - _RainDropSpeed: 1
+    - _RainDropTiling: 1
+    - _RainFlowDistortionScale: 4
+    - _RainFlowDistortionStrenght: 0.1
+    - _RainFlowIntensity: 0.329
+    - _RainFlowSmoothnessBoost: 1.3
+    - _RainFlowStrength: 1
+    - _RainFlowTiling: 10
+    - _SSSDistortion: 0.9
+    - _SSSIntensity: 3
+    - _SSSScale: 0.5
+    - _Smoothness: 1
+    - _SmoothnessDetail: 0.627
+    - _SmoothnessTextureChannel: 0
+    - _SmoothnessWet: 0.2
+    - _Snow: 1
+    - _SnowDisplacementStrength: 0.01
+    - _SnowNormalScale: 1
+    - _SnowTiling: 1
+    - _SpecularHighlights: 1
+    - _SrcBlend: 1
+    - _TessMax: 25
+    - _TessMin: 10
+    - _Tessellation: 1
+    - _TessellationFactor: 24
+    - _UVSec: 0
+    - _ZWrite: 1
+    - __dirty: 1
+    m_Colors:
+    - _Color: {r: 1, g: 1, b: 1, a: 1}
+    - _DetailTilingOffset: {r: 5, g: 5, b: 0, a: 0}
+    - _DetailTint: {r: 1, g: 1, b: 1, a: 1}
+    - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}
+    - _GlobalNormalTiling: {r: 5, g: 5, b: 0, a: 0}
+    - _PuddleColor: {r: 0.6037736, g: 0.6037736, b: 0.6037736, a: 0.6666667}
+    - _TilingOffset: {r: 5, g: 5, b: 0, a: 0}
+  m_BuildTextureStacks: []

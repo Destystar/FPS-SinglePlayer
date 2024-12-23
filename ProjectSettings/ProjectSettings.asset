@@ -826,7 +826,19 @@ PlayerSettings:
   webGLCloseOnQuit: 0
   webWasm2023: 0
   scriptingDefineSymbols:
-    Standalone: EMERALD_AI_2024_PRESENT
+    Android: ENVIRO_3
+    EmbeddedLinux: ENVIRO_3
+    GameCoreXboxOne: ENVIRO_3
+    Nintendo Switch: ENVIRO_3
+    PS4: ENVIRO_3
+    PS5: ENVIRO_3
+    QNX: ENVIRO_3
+    ReservedCFE: ENVIRO_3
+    Standalone: EMERALD_AI_2024_PRESENT;ODIN_INSPECTOR;ODIN_INSPECTOR_3;ODIN_INSPECTOR_3_1;ODIN_INSPECTOR_3_2;ODIN_INSPECTOR_3_3;ODIN_VALIDATOR;ODIN_VALIDATOR_3_1;ODIN_VALIDATOR_3_2;ODIN_VALIDATOR_3_3;ODIN_INSPECTOR_EDITOR_ONLY;ENVIRO_3
+    VisionOS: ENVIRO_3
+    WebGL: ENVIRO_3
+    XboxOne: ENVIRO_3
+    tvOS: ENVIRO_3
   additionalCompilerArguments: {}
   platformArchitecture: {}
   scriptingBackend:

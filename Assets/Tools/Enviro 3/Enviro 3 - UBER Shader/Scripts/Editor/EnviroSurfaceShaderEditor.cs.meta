@@ -1,0 +1,18 @@
+fileFormatVersion: 2
+guid: 379953bc7576a5d43b2886eaa55c88c9
+MonoImporter:
+  externalObjects: {}
+  serializedVersion: 2
+  defaultReferences: []
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 280825
+  packageName: Enviro 3 - UBER Shader
+  packageVersion: 1.1.1
+  assetPath: Assets/Enviro 3 - UBER Shader/Scripts/Editor/EnviroSurfaceShaderEditor.cs
+  uploadId: 696756

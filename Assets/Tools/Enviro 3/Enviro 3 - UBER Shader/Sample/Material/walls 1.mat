@@ -1,0 +1,195 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!21 &2100000
+Material:
+  serializedVersion: 8
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: walls 1
+  m_Shader: {fileID: 4800000, guid: d0cc0b962a16de54397519d974928332, type: 3}
+  m_ValidKeywords:
+  - _DETAILPROCEDURALMASK_HEIGHT
+  - _RAIN_ON
+  - _RENDERING_OPAQUE
+  - _SNOW_ON
+  - _TESSELLATION_ON
+  m_InvalidKeywords:
+  - _DETAILUV_UV0
+  - _ENABLE_FOG_ON_TRANSPARENT
+  - _RAINDROPS_ON
+  - _RAINFLOW_ON
+  m_LightmapFlags: 4
+  m_EnableInstancingVariants: 0
+  m_DoubleSidedGI: 0
+  m_CustomRenderQueue: 2000
+  stringTagMap:
+    RenderType: Opaque
+  disabledShaderPasses: []
+  m_SavedProperties:
+    serializedVersion: 3
+    m_TexEnvs:
+    - _BaseMask:
+        m_Texture: {fileID: 2800000, guid: e0a4a0f2905e9234abaa00c81671ef46, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _BumpMap:
+        m_Texture: {fileID: 2800000, guid: 7ab5f6f99b3f3954c917d875421a8cf2, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _DetailAlbedoMap:
+        m_Texture: {fileID: 2800000, guid: c23f07c96fae6da4ebbd724ae42087ea, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _DetailMask:
+        m_Texture: {fileID: 2800000, guid: b2be0beca4e5b654082d1a14385bab04, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _DetailNormalMap:
+        m_Texture: {fileID: 2800000, guid: 87d3c2a09bed1fa48be5af8eec13d504, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _EmissionMap:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _GlobalAlbedo:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _GlobalNormal:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _MainTex:
+        m_Texture: {fileID: 2800000, guid: 2c58c7d7b08e3dd479e208fb09833985, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _Mask:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _MetallicGlossMap:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _OcclusionMap:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _ParallaxMap:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _SnowAlbedo:
+        m_Texture: {fileID: 2800000, guid: 63dba5a337ea04c4b840c0c3c80c4fd4, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _SnowMask:
+        m_Texture: {fileID: 2800000, guid: 22975a93be597bb46be23512335912bf, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _SnowNormal:
+        m_Texture: {fileID: 2800000, guid: 2b00eddc57fe1314486a5f40cddaa470, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _WaveNormal:
+        m_Texture: {fileID: 2800000, guid: 42447ab0039b0974fb08cc177686d3e7, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _texcoord:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _texcoord2:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    m_Ints: []
+    m_Floats:
+    - _BumpScale: 0.6
+    - _CullMode: 2
+    - _CutOff: 0.5
+    - _CutOut: 0.339
+    - _Cutoff: 0.5
+    - _DetailHeight: -0.1
+    - _DetailHeightBlendStrength: 1
+    - _DetailMaskTiling: 1
+    - _DetailNormalInfluence: 0.69
+    - _DetailNormalMapScale: 1
+    - _DetailProceduralMask: 3
+    - _DetailProceduralMaskIntensity: 0.5
+    - _DetailProceduralMaskScale: 46.1
+    - _DetailThreshold: -0.54
+    - _DetailUV: 0
+    - _DisplacementStrength: 0.1
+    - _DstBlend: 0
+    - _ENVIROREMOVALZONES: 0
+    - _Emission: 0
+    - _GlobalDetailNormal: 0
+    - _GlobalNormalIntensity: 1
+    - _GlossMapScale: 1
+    - _Glossiness: 1
+    - _GlossyReflections: 1
+    - _Keyword1: 3
+    - _Metallic: 0
+    - _MetallicBase: 0
+    - _MetallicDetail: 0
+    - _Mode: 0
+    - _OcclusionStrength: 1
+    - _Opacity: 0
+    - _Parallax: 0.02
+    - _PuddleCoverageNoise: 0.5
+    - _PuddleIntensity: 1
+    - _PuddleWaveIntensity: 1
+    - _PuddleWaveTiling: 1
+    - _Puddles: 0
+    - _RENDERING: 2
+    - _Rain: 1
+    - _RainDistanceFade: 5
+    - _RainDropIntensity: 5
+    - _RainDropSpeed: 1
+    - _RainDropTiling: 10
+    - _RainDrops: 1
+    - _RainFlow: 1
+    - _RainFlowDistortionScale: 30
+    - _RainFlowDistortionStrenght: 0.06
+    - _RainFlowIntensity: 0.164
+    - _RainFlowIntensity1: 1
+    - _RainFlowSmoothnessBoost: 1
+    - _RainFlowStrength: 1
+    - _RainFlowTiling: 50
+    - _SSSDistortion: 0.8
+    - _SSSIntensity: 3
+    - _SSSScale: 0.5
+    - _Smoothness: 1
+    - _SmoothnessAdd: 0
+    - _SmoothnessDetail: 1
+    - _SmoothnessTextureChannel: 0
+    - _SmoothnessWet: 0.4
+    - _Snow: 1
+    - _SnowDisplacement: 0
+    - _SnowDisplacementStrength: 0.01
+    - _SnowNormalScale: 1
+    - _SnowTiling: 1
+    - _SpecularHighlights: 1
+    - _SrcBlend: 1
+    - _TessMax: 25
+    - _TessMin: 10
+    - _Tesselation: 0
+    - _TesselationFactor: 128
+    - _Tessellation: 1
+    - _TessellationFactor: 32.63
+    - _UVSec: 0
+    - _ZWrite: 1
+    - __dirty: 1
+    m_Colors:
+    - _Color: {r: 1, g: 1, b: 1, a: 0.31764707}
+    - _DetailTilingOffset: {r: 10, g: 10, b: 0, a: 0}
+    - _DetailTint: {r: 0.8018868, g: 0.8018868, b: 0.8018868, a: 1}
+    - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}
+    - _GlobalNormalTiling: {r: 1, g: 1, b: 0, a: 0}
+    - _PuddleColor: {r: 0.6037736, g: 0.6037736, b: 0.6037736, a: 0.6666667}
+    - _TilingOffset: {r: 5, g: 5, b: 0, a: 0}
+  m_BuildTextureStacks: []

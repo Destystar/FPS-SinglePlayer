@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: b1f45480ba0c8084d99c73036a482dac
+NativeFormatImporter:
+  externalObjects: {}
+  mainObjectFileID: 8574412962073106934
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 285621
+  packageName: Enviro 3 - Terrain Shader
+  packageVersion: 1.1.1
+  assetPath: Assets/Enviro 3 - Terrain/Samples/Textures/Rock2/Rock2.terrainlayer
+  uploadId: 697102
