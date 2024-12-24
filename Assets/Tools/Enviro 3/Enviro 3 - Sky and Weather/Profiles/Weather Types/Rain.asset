@@ -75,6 +75,7 @@ MonoBehaviour:
   lightingOverride:
     directLightIntensityModifier: 0.5
     ambientIntensityModifier: 0.6
+    shadowIntensity: 1
   skyOverride:
     intensity: 1
     skyColorTint: {r: 1, g: 1, b: 1, a: 1}
@@ -90,6 +91,12 @@ MonoBehaviour:
     scattering: 0.39
     extinction: 0.232
     anistropy: 0.105
+    fogAttenuationDistance: 400
+    maxHeight: 250
+    baseHeight: 0
+    ambientDimmer: 1
+    directLightMultiplier: 1
+    directLightShadowdimmer: 1
     unityFogDensity: 0.002
     unityFogStartDistance: 0
     unityFogEndDistance: 1000

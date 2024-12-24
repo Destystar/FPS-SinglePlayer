@@ -10,7 +10,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 8c9c04639ae548bdb0a8e927492d029d, type: 3}
-  m_Name: Rig_Soldier Girl Rigged
+  m_Name: Rig_Player
   m_EditorClassIdentifier: 
   targetAnimator: {fileID: 9100000, guid: 70b165214a68c65428af65a49a82895b, type: 2}
   inputConfig: {fileID: 11400000, guid: 022095d8cf55fba4080ab3e4c1364954, type: 2}
