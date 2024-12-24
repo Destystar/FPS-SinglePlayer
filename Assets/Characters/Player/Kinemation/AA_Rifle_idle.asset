@@ -12,8 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 59f5fc06806945df8a985b4b99c57863, type: 3}
   m_Name: AA_Rifle_Idle
   m_EditorClassIdentifier: 
-  rigAsset: {fileID: 11400000, guid: 49106709d10982c4b81b45c55e1b569e, type: 2}
-  clip: {fileID: -203655887218126122, guid: 8230767c9bcb5484e8ba4420c3a9e7ae, type: 3}
+  rigAsset: {fileID: 0}
+  clip: {fileID: 0}
   mask: {fileID: 0}
   overrideMask: {fileID: 0}
   isAdditive: 0
