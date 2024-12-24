@@ -11,42 +11,59 @@ using Demo.Scripts.Runtime.AttachmentSystem;
 using System.Collections.Generic;
 using Demo.Scripts.Runtime.Character;
 using UnityEngine;
+using UnityEditor;
 
 namespace Demo.Scripts.Runtime.Item
 {
     public class Weapon : FPSItem
     {
         [Header("General")]
-        [SerializeField] [Range(0f, 120f)] private float fieldOfView = 90f;
-        
+        [SerializeField][Range(0f, 120f)] private float fieldOfView = 90f;
+        [SerializeField][Range(0f, 3f)] private float noScopeAimFovMult = 1.5f;
+
         [SerializeField] private FPSAnimationAsset reloadClip;
         [SerializeField] private FPSCameraAnimation cameraReloadAnimation;
-        
+
         [SerializeField] private FPSAnimationAsset grenadeClip;
         [SerializeField] private FPSCameraAnimation cameraGrenadeAnimation;
+
+        private bool firing = false;
+
+        [Header("Weapon Stats")]
+        [SerializeField] private GameObject ammoPrefab;
+        [SerializeField] private int magSize;
+        [SerializeField] private int spareMags;
+        [SerializeField] private GameObject barrelEnd;
+        private int ammo;
 
         [Header("Recoil")]
         [SerializeField] private FPSAnimationAsset fireClip;
         [SerializeField] private RecoilAnimData recoilData;
         [SerializeField] private RecoilPatternSettings recoilPatternSettings;
         [SerializeField] private FPSCameraShake cameraShake;
-        [Min(0f)] [SerializeField] private float fireRate;
+        [Min(0f)][SerializeField] private float fireRate;
 
         [SerializeField] private bool supportsAuto;
         [SerializeField] private bool supportsBurst;
         [SerializeField] private int burstLength;
 
-        [Header("Attachments")] 
-        
+        [Header("Audio")]
+        [SerializeField] private AudioClip fireSound;
+        [SerializeField] private AudioClip switchFiremodeSound;
+        [SerializeField][Range(0f, 1f)] private float volumeScale = 0.7f;
+        AudioSource audioSource;
+
+        [Header("Attachments")]
+
         [SerializeField]
         private AttachmentGroup<BaseAttachment> barrelAttachments = new AttachmentGroup<BaseAttachment>();
-        
+
         [SerializeField]
         private AttachmentGroup<BaseAttachment> gripAttachments = new AttachmentGroup<BaseAttachment>();
-        
+
         [SerializeField]
         private List<AttachmentGroup<ScopeAttachment>> scopeGroups = new List<AttachmentGroup<ScopeAttachment>>();
-        
+
         //~ Controller references
 
         private FPSController _fpsController;
@@ -54,24 +71,39 @@ namespace Demo.Scripts.Runtime.Item
         private UserInputController _userInputController;
         private IPlayablesController _playablesController;
         private FPSCameraController _fpsCameraController;
-        
+
+
         private FPSAnimator _fpsAnimator;
         private FPSAnimatorEntity _fpsAnimatorEntity;
 
         private RecoilAnimation _recoilAnimation;
         private RecoilPattern _recoilPattern;
-        
+
         //~ Controller references
-        
+
         private Animator _weaponAnimator;
         private int _scopeIndex;
-        
+
         private float _lastRecoilTime;
         private int _bursts;
         private FireMode _fireMode = FireMode.Semi;
-        
+
         private static readonly int CurveEquip = Animator.StringToHash("CurveEquip");
         private static readonly int CurveUnequip = Animator.StringToHash("CurveUnequip");
+
+        private void Awake()
+        {
+            audioSource = GetComponent<AudioSource>();
+            ammo = magSize;
+        }
+
+        private void Update()
+        {
+            if (ammo >= 0 && firing == true)
+            {
+                _recoilAnimation.Stop();
+            }
+        }
 
         private void OnActionEnded()
         {
@@ -83,13 +115,17 @@ namespace Demo.Scripts.Runtime.Item
         {
             float fov = fieldOfView;
             float sensitivityMultiplier = 1f;
-            
+
             if (isAiming && scopeGroups.Count != 0)
             {
                 var scope = scopeGroups[_scopeIndex].GetActiveAttachment();
                 fov *= scope.aimFovZoom;
 
                 sensitivityMultiplier = scopeGroups[_scopeIndex].GetActiveAttachment().sensitivityMultiplier;
+            }
+            else if (isAiming && scopeGroups.Count == 0)
+            {
+                fov *= noScopeAimFovMult;
             }
 
             _userInputController.SetValue("SensitivityMultiplier", sensitivityMultiplier);
@@ -103,31 +139,40 @@ namespace Demo.Scripts.Runtime.Item
             var scope = scopeGroups[_scopeIndex].GetActiveAttachment().aimPoint;
             _fpsAnimatorEntity.defaultAimPoint = scope;
         }
-        
+
         protected void InitializeAttachments()
         {
             foreach (var attachmentGroup in scopeGroups)
             {
                 attachmentGroup.Initialize(_fpsAnimator);
             }
-            
+
             _scopeIndex = 0;
             if (scopeGroups.Count == 0) return;
 
             UpdateAimPoint();
             UpdateTargetFOV(false);
         }
-        
+
+        protected void FireBullet()
+        {
+            GameObject bulletInstance = Instantiate(ammoPrefab, barrelEnd.transform.position, barrelEnd.transform.rotation);
+            Rigidbody bulletRb = bulletInstance.GetComponent<Rigidbody>();
+            AmmoScript ammoScript = bulletInstance.GetComponentInParent<AmmoScript>();
+            Vector3 bulletVelocity = barrelEnd.transform.forward * ammoScript.bulletVelocity;
+            bulletRb.linearVelocity = bulletVelocity;
+        }
+
         public override void OnEquip(GameObject parent)
         {
             if (parent == null) return;
-            
+
             _fpsAnimator = parent.GetComponent<FPSAnimator>();
             _fpsAnimatorEntity = GetComponent<FPSAnimatorEntity>();
-            
+
             _fpsController = parent.GetComponent<FPSController>();
             _weaponAnimator = GetComponentInChildren<Animator>();
-            
+
             _controllerAnimator = parent.GetComponent<Animator>();
             _userInputController = parent.GetComponent<UserInputController>();
             _playablesController = parent.GetComponent<IPlayablesController>();
@@ -137,24 +182,24 @@ namespace Demo.Scripts.Runtime.Item
             {
                 _playablesController.UpdateAnimatorController(overrideController);
             }
-            
+
             InitializeAttachments();
-            
+
             _recoilAnimation = parent.GetComponent<RecoilAnimation>();
             _recoilPattern = parent.GetComponent<RecoilPattern>();
-            
+
             _fpsAnimator.LinkAnimatorProfile(gameObject);
-            
+
             barrelAttachments.Initialize(_fpsAnimator);
             gripAttachments.Initialize(_fpsAnimator);
-            
+
             _recoilAnimation.Init(recoilData, fireRate, _fireMode);
 
             if (_recoilPattern != null)
             {
                 _recoilPattern.Init(recoilPatternSettings);
             }
-            
+
             _fpsAnimator.LinkAnimatorLayer(equipMotion);
         }
 
@@ -168,7 +213,7 @@ namespace Demo.Scripts.Runtime.Item
             _userInputController.SetValue(FPSANames.IsAiming, true);
             UpdateTargetFOV(true);
             _recoilAnimation.isAiming = true;
-            
+
             return true;
         }
 
@@ -177,7 +222,7 @@ namespace Demo.Scripts.Runtime.Item
             _userInputController.SetValue(FPSANames.IsAiming, false);
             UpdateTargetFOV(false);
             _recoilAnimation.isAiming = false;
-            
+
             return true;
         }
 
@@ -188,12 +233,14 @@ namespace Demo.Scripts.Runtime.Item
             {
                 return false;
             }
-            
+
             _lastRecoilTime = Time.unscaledTime;
             _bursts = burstLength;
-            
+
+            firing = true;
+
             OnFire();
-            
+
             return true;
         }
 
@@ -203,40 +250,54 @@ namespace Demo.Scripts.Runtime.Item
             {
                 _recoilAnimation.Stop();
             }
-            
+
             if (_recoilPattern != null)
             {
                 _recoilPattern.OnFireEnd();
             }
-            
+
+            firing = false;
+
             CancelInvoke(nameof(OnFire));
             return true;
         }
 
         public override bool OnReload()
         {
-            if (!FPSAnimationAsset.IsValid(reloadClip))
+
+            if (ammo < magSize && spareMags > 0)
+            {
+                if (!FPSAnimationAsset.IsValid(reloadClip))
+                {
+                    return false;
+                }
+
+                ammo = magSize;
+                spareMags--;
+
+                _playablesController.PlayAnimation(reloadClip, 0f);
+
+                if (_weaponAnimator != null)
+                {
+                    _weaponAnimator.Rebind();
+                    _weaponAnimator.Play("Reload", 0);
+                }
+
+                if (_fpsCameraController != null)
+                {
+                    _fpsCameraController.PlayCameraAnimation(cameraReloadAnimation);
+                }
+
+                Invoke(nameof(OnActionEnded), reloadClip.clip.length * 0.85f);
+
+                OnFireReleased();
+                return true;
+            }
+            else
             {
                 return false;
             }
-            
-            _playablesController.PlayAnimation(reloadClip, 0f);
-            
-            if (_weaponAnimator != null)
-            {
-                _weaponAnimator.Rebind();
-                _weaponAnimator.Play("Reload", 0);
-            }
 
-            if (_fpsCameraController != null)
-            {
-                _fpsCameraController.PlayCameraAnimation(cameraReloadAnimation);
-            }
-            
-            Invoke(nameof(OnActionEnded), reloadClip.clip.length * 0.85f);
-
-            OnFireReleased();
-            return true;
         }
 
         public override bool OnGrenadeThrow()
@@ -247,70 +308,84 @@ namespace Demo.Scripts.Runtime.Item
             }
 
             _playablesController.PlayAnimation(grenadeClip, 0f);
-            
+
             if (_fpsCameraController != null)
             {
                 _fpsCameraController.PlayCameraAnimation(cameraGrenadeAnimation);
             }
-            
+
             Invoke(nameof(OnActionEnded), grenadeClip.clip.length * 0.8f);
             return true;
         }
-        
+
         private void OnFire()
         {
-            if (_weaponAnimator != null)
-            {
-                _weaponAnimator.Play("Fire", 0, 0f);
-            }
-            
-            _fpsCameraController.PlayCameraShake(cameraShake);
-            
-            if(fireClip != null) _playablesController.PlayAnimation(fireClip);
 
-            if (_recoilAnimation != null && recoilData != null)
+            if (ammo > 0)
             {
-                _recoilAnimation.Play();
-            }
-
-            if (_recoilPattern != null)
-            {
-                _recoilPattern.OnFireStart();
-            }
-
-            if (_recoilAnimation.fireMode == FireMode.Semi)
-            {
-                Invoke(nameof(OnFireReleased), 60f / fireRate);
-                return;
-            }
-            
-            if (_recoilAnimation.fireMode == FireMode.Burst)
-            {
-                _bursts--;
-                
-                if (_bursts == 0)
+                if (_weaponAnimator != null)
                 {
-                    OnFireReleased();
+                    _weaponAnimator.Play("Fire", 0, 0f);
+                }
+
+                ammo--;
+                audioSource.PlayOneShot(fireSound, volumeScale);
+                FireBullet();
+
+                _fpsCameraController.PlayCameraShake(cameraShake);
+
+                if (fireClip != null) _playablesController.PlayAnimation(fireClip);
+
+                if (_recoilAnimation != null && recoilData != null)
+                {
+                    _recoilAnimation.Play();
+                }
+
+                if (_recoilPattern != null)
+                {
+                    _recoilPattern.OnFireStart();
+                }
+
+                if (_recoilAnimation.fireMode == FireMode.Semi)
+                {
+                    Invoke(nameof(OnFireReleased), 60f / fireRate);
                     return;
                 }
+
+                if (_recoilAnimation.fireMode == FireMode.Burst)
+                {
+                    _bursts--;
+
+                    if (_bursts == 0)
+                    {
+                        OnFireReleased();
+                        return;
+                    }
+                }
+
+                if (supportsAuto && ammo > 0)
+                {
+                    Invoke(nameof(OnFire), 60f / fireRate);
+                }
             }
-            
-            Invoke(nameof(OnFire), 60f / fireRate);
         }
 
         public override void OnCycleScope()
         {
             if (scopeGroups.Count == 0) return;
-            
+
             _scopeIndex++;
             _scopeIndex = _scopeIndex > scopeGroups.Count - 1 ? 0 : _scopeIndex;
-            
+
             UpdateAimPoint();
             UpdateTargetFOV(true);
         }
 
         private void CycleFireMode()
         {
+
+            audioSource.PlayOneShot(switchFiremodeSound, 0.7f);
+
             if (_fireMode == FireMode.Semi && supportsBurst)
             {
                 _fireMode = FireMode.Burst;
@@ -326,7 +401,7 @@ namespace Demo.Scripts.Runtime.Item
 
             _fireMode = FireMode.Semi;
         }
-        
+
         public override void OnChangeFireMode()
         {
             CycleFireMode();
