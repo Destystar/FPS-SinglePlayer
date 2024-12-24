@@ -12,13 +12,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b9bd91fa31d045f79762a272fd5f0e61, type: 3}
   m_Name: Player Controller Settings
   m_EditorClassIdentifier: 
-  rigAsset: {fileID: 0}
+  rigAsset: {fileID: 11400000, guid: 49106709d10982c4b81b45c55e1b569e, type: 2}
   unarmedController: {fileID: 0}
-  aimingMotion: {fileID: 0}
-  crouchingMotion: {fileID: 0}
-  jumpingMotion: {fileID: 0}
-  stopMotion: {fileID: 0}
-  leanMotion: {fileID: 0}
+  aimingMotion: {fileID: 11400000, guid: 2951c90938854f24c935627d36bbc3cd, type: 2}
+  crouchingMotion: {fileID: 11400000, guid: fa23e63ff38a3bb4f9f7bca500ced7ce, type: 2}
+  jumpingMotion: {fileID: 11400000, guid: 93be04a77e31740498d5c7d7e8286ab5, type: 2}
+  stopMotion: {fileID: 11400000, guid: df1c50775e86cd04d81a570dca084893, type: 2}
+  leanMotion: {fileID: 11400000, guid: a493caf2a32529d4d88aff9ccf78e181, type: 2}
   timeScale: 1
   equipDelay: 0
   leanAngle: 25
@@ -27,4 +27,5 @@ MonoBehaviour:
     name: IK WeaponBone
     index: -1
     isVirtual: 0
-  weaponPrefabs: []
+  weaponPrefabs:
+  - {fileID: 2032916524705936149, guid: 29a3d3b1f6ce0bc46b7d3277da54fbbc, type: 3}
