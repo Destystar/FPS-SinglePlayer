@@ -12,7 +12,7 @@ namespace Enviro
 
         //Properties
         private SerializedProperty fog, volumetrics, ditheringTex, quality, steps, scattering,scatteringMultiplier, extinction, anistropy, maxRange,maxRangePointSpot, noiseIntensity, noiseScale, windDirection, noise;
-        private SerializedProperty globalFogHeight, fogDensity, fogHeightFalloff, fogHeight, fogDensity2, fogHeightFalloff2, fogHeight2, fogMaxOpacity, startDistance, fogColorBlend,fogColorMod,ambientColorGradient;
+        private SerializedProperty fogQualityMode,globalFogHeight, fogDensity, fogHeightFalloff, fogHeight, fogDensity2, fogHeightFalloff2, fogHeight2, fogMaxOpacity, startDistance, fogColorBlend,fogColorMod,ambientColorGradient;
         private SerializedProperty unityFog, unityFogDensity, unityFogColor, unityFogMode, unityFogStartDistance, unityFogEndDistance;
     
     #if ENVIRO_HDRP
@@ -46,6 +46,7 @@ namespace Enviro
 
             //Height Fog
             fog = serializedObj.FindProperty("Settings.fog");
+            fogQualityMode = serializedObj.FindProperty("Settings.fogQualityMode");
             globalFogHeight = serializedObj.FindProperty("Settings.globalFogHeight");
             fogDensity = serializedObj.FindProperty("Settings.fogDensity");
             fogHeightFalloff = serializedObj.FindProperty("Settings.fogHeightFalloff");
@@ -121,6 +122,7 @@ namespace Enviro
                     GUILayout.Space(5);
                     DisableInputStartQuality();
                     EditorGUILayout.PropertyField(fog);
+                    EditorGUILayout.PropertyField(fogQualityMode); 
                     DisableInputEndQuality();
                     GUILayout.Space(5);
                     if(myTarget.Settings.fog)
@@ -136,12 +138,16 @@ namespace Enviro
                     EditorGUILayout.PropertyField(fogHeight);
                     GUILayout.Space(10);
 
-                    EditorGUILayout.LabelField("Fog Layer 2",headerStyle);
-                    GUILayout.Space(5);
-                    EditorGUILayout.PropertyField(fogDensity2);
-                    EditorGUILayout.PropertyField(fogHeightFalloff2);
-                    EditorGUILayout.PropertyField(fogHeight2);
-                    GUILayout.Space(10);
+                    if(myTarget.Settings.fogQualityMode == EnviroFogSettings.FogQualityMode.Normal)               
+                    {
+                        EditorGUILayout.LabelField("Fog Layer 2",headerStyle);
+                        GUILayout.Space(5);
+                        EditorGUILayout.PropertyField(fogDensity2);
+                        EditorGUILayout.PropertyField(fogHeightFalloff2);
+                        EditorGUILayout.PropertyField(fogHeight2);
+                        GUILayout.Space(10);
+                    }
+                
                     DisableInputEnd();
 
                     EditorGUILayout.LabelField("Opacity and Distance",headerStyle);

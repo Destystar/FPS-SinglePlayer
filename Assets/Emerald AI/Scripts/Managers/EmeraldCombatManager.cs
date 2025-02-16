@@ -334,6 +334,8 @@ namespace EmeraldAI.Utility
         public static void DisableComponents(EmeraldSystem EmeraldComponent)
         {
             if (EmeraldComponent.SoundDetectorComponent != null) EmeraldComponent.SoundDetectorComponent.enabled = false;
+            
+            if (EmeraldComponent.CoverComponent != null) EmeraldComponent.CoverComponent.enabled = false;
 
             if (EmeraldComponent.OptimizationComponent != null && EmeraldComponent.OptimizationComponent.m_VisibilityCheck != null)
             {
@@ -390,6 +392,8 @@ namespace EmeraldAI.Utility
         public static void EnableComponents(EmeraldSystem EmeraldComponent)
         {
             if (EmeraldComponent.SoundDetectorComponent != null) EmeraldComponent.SoundDetectorComponent.enabled = true;
+
+            if (EmeraldComponent.CoverComponent != null) EmeraldComponent.CoverComponent.enabled = true;
 
             if (EmeraldComponent.OptimizationComponent != null && EmeraldComponent.OptimizationComponent.m_VisibilityCheck != null)
             {

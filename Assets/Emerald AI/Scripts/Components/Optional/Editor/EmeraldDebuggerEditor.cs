@@ -14,7 +14,7 @@ namespace EmeraldAI.Utility
         SerializedProperty SettingsFoldoutProp, HideSettingsFoldoutProp;
        
         SerializedProperty EnableDebuggingToolsProp, DrawLineOfSightLinesProp, DrawNavMeshPathProp, DrawNavMeshDestinationProp, DrawLookAtPointsProp, DrawUndetectedTargetsLineProp, DebugLogTargetsProp, DebugLogObstructionsProp, NavMeshPathColorProp, NavMeshDestinationColorProp,
-            DrawFootstepPositions, DebugLogFootsteps;
+            DrawFootstepPositions, DebugLogFootsteps, DrawDetectedCoverNodes;
 
         void OnEnable()
         {
@@ -40,6 +40,7 @@ namespace EmeraldAI.Utility
             NavMeshDestinationColorProp = serializedObject.FindProperty("NavMeshDestinationColor");
             DrawFootstepPositions = serializedObject.FindProperty("DrawFootstepPositions");
             DebugLogFootsteps = serializedObject.FindProperty("DebugLogFootsteps");
+            DrawDetectedCoverNodes = serializedObject.FindProperty("DrawDetectedCoverNodes");
         }
 
         public override void OnInspectorGUI()
@@ -121,6 +122,11 @@ namespace EmeraldAI.Utility
                     EditorGUILayout.PropertyField(DebugLogFootsteps);
                     CustomEditorProperties.CustomHelpLabelField("Allows the AI's footsteps collision objects and used Footstep Surface Object to be displayed in the Unity Console. This can be helpful to ensure there are no unintended collisions " +
                         "and that the footstep caculations are detecting properly. If no Footsteps Component is present, this setting will be ignored.", true);
+
+                    EditorGUILayout.PropertyField(DrawDetectedCoverNodes);
+                    CustomEditorProperties.CustomHelpLabelField("Allows an AI's recently detected Cover Nodes to be drawn with a circle around them when using the Cover Component, while in the Unity Editor. Detected Cover Nodes will be drawn in yellow " +
+                        "and the chosen one will be drawn in green. This can be helpful to ensure Cover Nodes are being properly detected. If no Cover Component is present, this setting will be ignored.", true);
+
                     CustomEditorProperties.EndIndent();
                 }
                 CustomEditorProperties.EndFoldoutWindowBox();

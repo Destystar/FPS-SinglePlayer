@@ -79,7 +79,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 43b4e18e1baccc642a82a5e642fd6997, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  configuration: {fileID: 11400000, guid: b8995ee01f915d8429338671c3dc7e13, type: 2}
+  configuration: {fileID: 11400000, guid: e413dbe407a991f4da1884e6c659de12, type: 2}
   lastConfiguration: {fileID: 0}
   Time: {fileID: 0}
   Lighting: {fileID: 0}

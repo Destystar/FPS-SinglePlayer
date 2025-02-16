@@ -23,10 +23,10 @@ MonoBehaviour:
   AnimatorCullingMode: 0
   WalkFoldout: 0
   RunFoldout: 0
-  TurnFoldout: 1
+  TurnFoldout: 0
   NonCombatDeathFoldout: 0
   NonCombatAnimationsFoldout: 1
-  NonCombatIdleFoldout: 0
+  NonCombatIdleFoldout: 1
   NonCombatHitFoldout: 0
   EmotesFoldout: 0
   Type1IdleFoldout: 0
@@ -54,7 +54,7 @@ MonoBehaviour:
   Type1DodgeFoldout: 0
   Type2DodgeFoldout: 0
   AnimationProfileFoldout: 0
-  AnimatorSettingsFoldout: 1
+  AnimatorSettingsFoldout: 0
   Type1HitConditions: -1
   Type2HitConditions: -1
   Type1HitAnimationCooldown: 0.1
@@ -159,11 +159,11 @@ MonoBehaviour:
   Type1Animations:
     IdleList: []
     IdleStationary:
-      AnimationSpeed: 0
+      AnimationSpeed: 1
       AnimationClip: {fileID: 0}
       Mirror: 0
     IdleWarning:
-      AnimationSpeed: 0
+      AnimationSpeed: 1
       AnimationClip: {fileID: 0}
       Mirror: 0
     WalkLeft:

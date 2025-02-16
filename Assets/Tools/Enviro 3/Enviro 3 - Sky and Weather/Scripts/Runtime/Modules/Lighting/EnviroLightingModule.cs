@@ -53,8 +53,10 @@ namespace Enviro
         [Range(0f,2f)]
         public float ambientIntensityModifier = 1f;
 
+        public bool ambientUpdateEveryFrame = false;
+
         [Range(0f,2f)]
-        public float ambientSkyboxUpdateIntervall = 0.1f;
+        public float ambientUpdateIntervall = 0.1f;
               
         [Range(0f,1f)]
         public float shadowIntensity = 1f;
@@ -189,7 +191,7 @@ namespace Enviro
             if (Settings.setAmbientLighting)
             {
                 #if !ENVIRO_HDRP
-                UpdateAmbientLighting ();
+                UpdateAmbientLighting (Settings.ambientUpdateEveryFrame);
                 #else
                 if(EnviroManager.instance.updateSkyAndLighting)
                    UpdateAmbientLightingHDRP ();
@@ -407,25 +409,25 @@ namespace Enviro
                 
                 if(EnviroManager.instance.Time != null)
                 {
-                    lastAmbientSkyboxUpdate = EnviroManager.instance.Time.Settings.timeOfDay + Settings.ambientSkyboxUpdateIntervall;
+                    lastAmbientSkyboxUpdate = EnviroManager.instance.Time.Settings.timeOfDay + Settings.ambientUpdateIntervall;
                 }
             }
             else
             { 
                 if(EnviroManager.instance.Time != null)
                 {
-                    if (lastAmbientSkyboxUpdate < EnviroManager.instance.Time.Settings.timeOfDay || lastAmbientSkyboxUpdate > EnviroManager.instance.Time.Settings.timeOfDay + (Settings.ambientSkyboxUpdateIntervall + 0.01f))
+                    if (lastAmbientSkyboxUpdate < EnviroManager.instance.Time.Settings.timeOfDay || lastAmbientSkyboxUpdate > EnviroManager.instance.Time.Settings.timeOfDay + (Settings.ambientUpdateIntervall + 0.01f))
                     {
                         UpdateAmbient(Settings.ambientMode,intensity);
-                        lastAmbientSkyboxUpdate = EnviroManager.instance.Time.Settings.timeOfDay + Settings.ambientSkyboxUpdateIntervall;
+                        lastAmbientSkyboxUpdate = EnviroManager.instance.Time.Settings.timeOfDay + Settings.ambientUpdateIntervall;
                     }
                 }
                 else
                 {
-                    if (lastAmbientSkyboxUpdate < Time.realtimeSinceStartup || lastAmbientSkyboxUpdate > Time.realtimeSinceStartup + (Settings.ambientSkyboxUpdateIntervall + 0.01f))
+                    if (lastAmbientSkyboxUpdate < Time.realtimeSinceStartup || lastAmbientSkyboxUpdate > Time.realtimeSinceStartup + (Settings.ambientUpdateIntervall + 0.01f))
                     {
                         UpdateAmbient(Settings.ambientMode,intensity);
-                        lastAmbientSkyboxUpdate = Time.realtimeSinceStartup + Settings.ambientSkyboxUpdateIntervall;
+                        lastAmbientSkyboxUpdate = Time.realtimeSinceStartup + Settings.ambientUpdateIntervall;
                     }
                 }
             }

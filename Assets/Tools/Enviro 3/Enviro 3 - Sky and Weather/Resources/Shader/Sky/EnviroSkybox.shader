@@ -26,7 +26,8 @@ Shader "Enviro/Skybox"
 			#include "../Includes/SkyInclude.cginc"
 			#pragma target 3.0 
 			#pragma multi_compile __ UNITY_COLORSPACE_GAMMA
-			//#pragma multi_compile_fog
+			#pragma multi_compile __ ENVIRO_SIMPLESKY
+
 
 			uniform float4 _SkyMoonParameters;
 			uniform float4 _SkySunParameters;
@@ -166,21 +167,29 @@ Shader "Enviro/Skybox"
 				float4 skyColor = float4(0, 0, 0, 1);
 				float3 viewDir = normalize(i.texcoord);
    
-				skyColor = GetSkyColor(viewDir, 0.005f);  
+
+				#if ENVIRO_SIMPLESKY
+					skyColor = GetSkyColorSimple(viewDir, 0.005f);  
+				#else
+					skyColor = GetSkyColor(viewDir, 0.005f);  
+				#endif
+				
 
 				//Stars
 				float4 starsTex = texCUBE(_StarsTex, i.starPos.xyz) * saturate(viewDir.y);
 				float4 stars = starsTex * _StarIntensity * 10;
 
+				#ifndef ENVIRO_SIMPLESKY
 				if (_StarsTwinkling > 0)
 				{
 					float4 starsTwinklingMap = texCUBE(_StarsTwinklingTex, i.starsTwinklingPos.xyz);
 					stars = stars * starsTwinklingMap;
-				} 
-		
+				}  
+				
 				//Galaxy
 				float4 galaxyTex = texCUBE(_GalaxyTex, i.starPos.xyz) * saturate(viewDir.y);
 				float4 galaxy = galaxyTex * _GalaxyIntensity;
+				#endif
 
 				//Sun
 				float4 sun = float4(0,0,0,1);
@@ -202,13 +211,17 @@ Shader "Enviro/Skybox"
 					//float4 moonGlow = tex2D(_MoonGlowTex, i.moonGlowPos.xy) * hideBackMoon;
 					//moonGlow = moonGlow * _MoonColor * _MoonGlowIntensity;
 					skyColor += stars * starsBehindMoon;
+					#ifndef ENVIRO_SIMPLESKY
 					skyColor += galaxy * starsBehindMoon;
+					#endif 
 					skyColor += moon;
 				}
 				else
 				{
 					skyColor += stars;
+					#ifndef ENVIRO_SIMPLESKY
 					skyColor += galaxy;
+					#endif 
 				}
 				
 				//Aurora
@@ -223,7 +236,9 @@ Shader "Enviro/Skybox"
 				//skyColor.rgb = skyColor.rgb * (1 - cubeMap.a) + (cubeMap.rgb * _CubeIntensity) * cubeMap.a;
 
 				//Dithering
+				#ifndef ENVIRO_SIMPLESKY
 				skyColor.rgb += ScreenSpaceDither(i.position.xy,skyColor.rgb);
+				#endif 
 
 				//Cirrus
 				if(_CirrusClouds > 0.0)

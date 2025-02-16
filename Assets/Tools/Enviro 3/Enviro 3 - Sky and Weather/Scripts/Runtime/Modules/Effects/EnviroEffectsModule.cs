@@ -3,11 +3,21 @@ using System.Collections.Generic;
 using UnityEngine;
 using System;
 
+
 namespace Enviro 
 {
     [Serializable]
     public class EnviroEffectTypes
     {
+        #if ENVIRO_VFXGRAPH
+        public UnityEngine.VFX.VisualEffect myVFXGraph;
+        public GameObject prefabVFXGraph;
+
+        public Vector3 localPositionOffsetVFXGraph;
+        public Vector3 localRotationOffsetVFXGraph;
+        public float maxEmissionVFXGraph; 
+
+        #endif
         public ParticleSystem mySystem; 
         public string name;
         public GameObject prefab;
@@ -20,7 +30,17 @@ namespace Enviro
     [Serializable]
     public class EnviroEffects
     {
+        public enum EnviroEffectSystemType 
+        {
+            ParticleSystem,
+            VFXGraph,
+            Both
+        } 
+
+        public EnviroEffectSystemType enviroEffectSystemType = EnviroEffectSystemType.VFXGraph;
         public List<EnviroEffectTypes> effectTypes = new List<EnviroEffectTypes>();
+        [Range(0f,2f)]
+        public float particeEmissionRateModifier = 1f;
     }
  
     [Serializable]
@@ -84,7 +104,7 @@ namespace Enviro
             for(int i = 0; i < Settings.effectTypes.Count; i++)
             {
                 if(Settings.effectTypes[i].mySystem != null)
-                    DestroyImmediate(Settings.effectTypes[i].mySystem.gameObject);
+                   DestroyImmediate(Settings.effectTypes[i].mySystem.gameObject);
 
                 GameObject sys;
                   
@@ -92,11 +112,25 @@ namespace Enviro
                 {
                    sys = Instantiate(Settings.effectTypes[i].prefab,Settings.effectTypes[i].localPositionOffset,Quaternion.identity);
                    sys.transform.SetParent(EnviroManager.instance.Objects.effects.transform);
-                   sys.name = Settings.effectTypes[i].name;
+                   sys.name = Settings.effectTypes[i].name + " Particle System";
                    sys.transform.localPosition = Settings.effectTypes[i].localPositionOffset;
                    sys.transform.localEulerAngles = Settings.effectTypes[i].localRotationOffset;
                    Settings.effectTypes[i].mySystem = sys.GetComponent<ParticleSystem>();
+                   Settings.effectTypes[i].mySystem.Stop();
+                } 
+
+                #if ENVIRO_VFXGRAPH
+                if(Settings.effectTypes[i].prefabVFXGraph != null)
+                {
+                   sys = Instantiate(Settings.effectTypes[i].prefabVFXGraph,Settings.effectTypes[i].localPositionOffsetVFXGraph,Quaternion.identity);
+                   sys.transform.SetParent(EnviroManager.instance.Objects.effects.transform);
+                   sys.name = Settings.effectTypes[i].name + " VFX Graph";
+                   sys.transform.localPosition = Settings.effectTypes[i].localPositionOffsetVFXGraph;
+                   sys.transform.localEulerAngles = Settings.effectTypes[i].localRotationOffsetVFXGraph;
+                   Settings.effectTypes[i].myVFXGraph = sys.GetComponent<UnityEngine.VFX.VisualEffect>();
+                   Settings.effectTypes[i].myVFXGraph.Stop(); 
                 }
+                #endif
             }
         }
 
@@ -104,7 +138,6 @@ namespace Enviro
         {
             return system.emission.rateOverTime.constantMax;
         }
-
 
         public void SetEmissionRate(ParticleSystem sys, float emissionRate)
         {
@@ -114,23 +147,111 @@ namespace Enviro
             emission.rateOverTime = rate;
         }
 
+ #if ENVIRO_VFXGRAPH
+        public float GetEmissionRate(UnityEngine.VFX.VisualEffect system)
+        {
+            return system.GetFloat("Emission Rate");
+        }
+
+
+        public void SetEmissionRate(UnityEngine.VFX.VisualEffect system, float emissionRate)
+        {
+            system.SetFloat("Emission Rate", emissionRate);
+            
+            if(EnviroManager.instance.Environment != null)
+            {
+                system.SetVector3("Wind",new UnityEngine.Vector3 (EnviroManager.instance.Environment.Settings.windDirectionX,0f,EnviroManager.instance.Environment.Settings.windDirectionY));
+            }     
+        }
+#endif 
         private void UpdateEffects()
         {
             Shader.SetGlobalFloat("_EnviroLightIntensity", EnviroManager.instance.solarTime);
 
+            
             for(int i = 0; i < Settings.effectTypes.Count; i++)
             {
+            #if ENVIRO_VFXGRAPH
+            if(Settings.enviroEffectSystemType == EnviroEffects.EnviroEffectSystemType.VFXGraph)
+            {
+                if(Settings.effectTypes[i].myVFXGraph != null) 
+                {
+                        float currentEmission = Settings.effectTypes[i].maxEmissionVFXGraph * Settings.effectTypes[i].emissionRate * Settings.particeEmissionRateModifier;
+
+                        SetEmissionRate(Settings.effectTypes[i].myVFXGraph,currentEmission);
+
+                        if(currentEmission > 0f && Settings.effectTypes[i].myVFXGraph.aliveParticleCount < 1)
+                           Settings.effectTypes[i].myVFXGraph.Play();  
+                }
+
                 if(Settings.effectTypes[i].mySystem != null)
                 {
-                    float currentEmission = Settings.effectTypes[i].maxEmission * Settings.effectTypes[i].emissionRate;
+                    SetEmissionRate(Settings.effectTypes[i].mySystem,0f);
+
+                    if(Settings.effectTypes[i].mySystem.isPlaying)
+                       Settings.effectTypes[i].mySystem.Stop();
+                }
+
+            } 
+            else if(Settings.enviroEffectSystemType == EnviroEffects.EnviroEffectSystemType.ParticleSystem)
+            {
+
+                if(Settings.effectTypes[i].mySystem != null)
+                {
+                    float currentEmission = Settings.effectTypes[i].maxEmission * Settings.effectTypes[i].emissionRate * Settings.particeEmissionRateModifier;
 
                     SetEmissionRate(Settings.effectTypes[i].mySystem,currentEmission);
 
                     if(currentEmission > 0f && !Settings.effectTypes[i].mySystem.isPlaying)
-                       Settings.effectTypes[i].mySystem.Play();
+                        Settings.effectTypes[i].mySystem.Play();
+                }
+
+                if(Settings.effectTypes[i].myVFXGraph != null) 
+                {
+                     SetEmissionRate(Settings.effectTypes[i].myVFXGraph,0f);
+
+                     if (Settings.effectTypes[i].myVFXGraph.aliveParticleCount > 0)
+                         Settings.effectTypes[i].myVFXGraph.Stop(); 
+                }
+
+            }
+            else
+            {
+                if(Settings.effectTypes[i].myVFXGraph != null) 
+                {
+                    float currentEmission = Settings.effectTypes[i].maxEmissionVFXGraph * Settings.effectTypes[i].emissionRate * Settings.particeEmissionRateModifier;
+
+                    SetEmissionRate(Settings.effectTypes[i].myVFXGraph,currentEmission);
+
+                    if(currentEmission > 0f && Settings.effectTypes[i].myVFXGraph.aliveParticleCount < 1)
+                        Settings.effectTypes[i].myVFXGraph.Play(); 
+                }
+
+                if(Settings.effectTypes[i].mySystem != null)
+                {
+                    float currentEmission = Settings.effectTypes[i].maxEmission * Settings.effectTypes[i].emissionRate * Settings.particeEmissionRateModifier;
+
+                    SetEmissionRate(Settings.effectTypes[i].mySystem,currentEmission);
+
+                    if(currentEmission > 0f && !Settings.effectTypes[i].mySystem.isPlaying)
+                    Settings.effectTypes[i].mySystem.Play();
                 }
             }
+
+        #else
+            if(Settings.effectTypes[i].mySystem != null)
+            {
+                float currentEmission = Settings.effectTypes[i].maxEmission * Settings.effectTypes[i].emissionRate * Settings.particeEmissionRateModifier;
+
+                SetEmissionRate(Settings.effectTypes[i].mySystem,currentEmission);
+
+                if(currentEmission > 0f && !Settings.effectTypes[i].mySystem.isPlaying)
+                Settings.effectTypes[i].mySystem.Play();
+            }
+        #endif   
+            }
         }
+
 
         //Save and Load
         public void LoadModuleValues ()

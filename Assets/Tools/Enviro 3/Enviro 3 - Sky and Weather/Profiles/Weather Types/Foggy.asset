@@ -16,7 +16,7 @@ MonoBehaviour:
   showEffectControls: 0
   showCloudControls: 0
   showFlatCloudControls: 0
-  showFogControls: 1
+  showFogControls: 0
   showSkyControls: 0
   showLightingControls: 0
   showAuroraControls: 0
@@ -75,6 +75,7 @@ MonoBehaviour:
   lightingOverride:
     directLightIntensityModifier: 1
     ambientIntensityModifier: 1
+    shadowIntensity: 1
   skyOverride:
     intensity: 1
     skyColorTint: {r: 1, g: 1, b: 1, a: 1}

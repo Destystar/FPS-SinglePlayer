@@ -295,6 +295,7 @@ namespace Enviro {
                 { 
 
                     EnviroVolumetricCloudRenderer renderer = GetCloudsRenderer(cameraData.camera);
+                    
                     EnviroManager.instance.VolumetricClouds.RenderVolumetricCloudsURP(this,renderGraph, resourceData, cameraData,source,temp1, renderer, myQuality);   
 
                     if(EnviroManager.instance.VolumetricClouds.settingsGlobal.cloudShadows && cameraData.camera.cameraType != CameraType.Reflection)

@@ -16,12 +16,11 @@
             #pragma fragment frag
             #pragma multi_compile __ UNITY_COLORSPACE_GAMMA     
             #pragma multi_compile __ ENVIROURP
-            #pragma multi_compile __ ENVIRO_VOLUMELIGHT     
 
     #if defined (ENVIROURP)
             #include "Packages/com.unity.render-pipelines.universal/ShaderLibrary/Core.hlsl"
             #include "Packages/com.unity.render-pipelines.core/Runtime/Utilities/Blit.hlsl"
-            #include "../Includes/FogIncludeHLSL.hlsl"
+            #include_with_pragmas "../Includes/FogIncludeHLSL.hlsl"
 
             struct appdata
             {

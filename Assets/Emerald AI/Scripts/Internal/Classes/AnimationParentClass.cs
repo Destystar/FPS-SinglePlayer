@@ -78,6 +78,11 @@ namespace EmeraldAI
         public AnimationClass Stunned;
 
         /// <summary>
+        /// Cover Animation (Type 1 and Type 2 Only)
+        /// </summary>
+        public AnimationClass CoverIdle, CoverHit;
+
+        /// <summary>
         /// Equip and Unequip Animations (Type 1 and Type 2 Only)
         /// </summary>
         public AnimationClass PutAwayWeapon, PullOutWeapon;

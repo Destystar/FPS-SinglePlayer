@@ -46,6 +46,11 @@ namespace Enviro
                
             if(Settings.defaultQuality != null)
             {
+                if(EnviroManager.instance.Sky != null)
+                {
+                     EnviroManager.instance.Sky.Settings.skyMode = Settings.defaultQuality.skyOverride.skyMode;
+                }
+
                 if(EnviroManager.instance.VolumetricClouds != null)
                 {
                     EnviroManager.instance.VolumetricClouds.settingsQuality.volumetricClouds = Settings.defaultQuality.volumetricCloudsOverride.volumetricClouds; 
@@ -61,6 +66,7 @@ namespace Enviro
                 if(EnviroManager.instance.Fog != null)
                 {
                     EnviroManager.instance.Fog.Settings.fog = Settings.defaultQuality.fogOverride.fog;
+                    EnviroManager.instance.Fog.Settings.fogQualityMode = Settings.defaultQuality.fogOverride.fogQualityMode;
                     EnviroManager.instance.Fog.Settings.volumetrics = Settings.defaultQuality.fogOverride.volumetrics;
                     EnviroManager.instance.Fog.Settings.unityFog = Settings.defaultQuality.fogOverride.unityFog;
                     EnviroManager.instance.Fog.Settings.quality = Settings.defaultQuality.fogOverride.quality;
@@ -78,6 +84,12 @@ namespace Enviro
                     EnviroManager.instance.Aurora.Settings.useAurora = Settings.defaultQuality.auroraOverride.aurora;
                     EnviroManager.instance.Aurora.Settings.auroraSteps = Settings.defaultQuality.auroraOverride.steps;
                 }
+
+                if(EnviroManager.instance.Effects != null)
+                {
+                    EnviroManager.instance.Effects.Settings.particeEmissionRateModifier = Settings.defaultQuality.effectsOverride.particeEmissionRateModifier;    
+                }
+
 
             }
         } 

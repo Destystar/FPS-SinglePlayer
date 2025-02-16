@@ -11,7 +11,7 @@ namespace Enviro
         private EnviroSkyModule myTarget; 
 
         //Properties
-        private SerializedProperty forcedSkyboxSetup;
+        private SerializedProperty forcedSkyboxSetup, skyMode;
         private SerializedProperty frontColorGradient0,frontColorGradient1,frontColorGradient2,frontColorGradient3,frontColorGradient4,frontColorGradient5;  
         private SerializedProperty frontColor0,frontColor1,frontColor2,frontColor3,frontColor4,frontColor5;  
         private SerializedProperty sunDiscColorGradient, moonColorGradient, moonGlowColorGradient;
@@ -38,6 +38,7 @@ namespace Enviro
             preset = serializedObj.FindProperty("preset");
 
             forcedSkyboxSetup = serializedObj.FindProperty("Settings.forcedSkyboxSetup");
+            skyMode = serializedObj.FindProperty("Settings.skyMode"); 
             // Front Colors
             frontColorGradient0 = serializedObj.FindProperty("Settings.frontColorGradient0");
             frontColorGradient1 = serializedObj.FindProperty("Settings.frontColorGradient1");
@@ -130,11 +131,15 @@ namespace Enviro
                 {
                     GUILayout.Space(10);
                     EditorGUILayout.LabelField("General",headerStyle);
-                    EditorGUILayout.PropertyField(forcedSkyboxSetup);
+                    EditorGUILayout.PropertyField(skyMode);   
+                    EditorGUILayout.PropertyField(forcedSkyboxSetup);       
                     GUILayout.Space(10);
+                    if(myTarget.Settings.skyMode == EnviroSky.SkyMode.Normal)
+                    {
                     EditorGUILayout.LabelField("Ground Color",headerStyle);
                     EditorGUILayout.PropertyField(frontColorGradient0);
                     EditorGUILayout.PropertyField(backColorGradient0);
+                    }
                     GUILayout.Space(5);
                     EditorGUILayout.LabelField("Horizon Colors",headerStyle);
                     EditorGUILayout.PropertyField(frontColorGradient1);
@@ -142,12 +147,16 @@ namespace Enviro
                     GUILayout.Space(5);
                     EditorGUILayout.PropertyField(frontColorGradient2);
                     EditorGUILayout.PropertyField(backColorGradient2);
+
+                    if(myTarget.Settings.skyMode == EnviroSky.SkyMode.Normal)
+                    {
                     GUILayout.Space(5);   
                     EditorGUILayout.PropertyField(frontColorGradient3);
                     EditorGUILayout.PropertyField(backColorGradient3);
                     GUILayout.Space(5);   
                     EditorGUILayout.PropertyField(frontColorGradient4);
                     EditorGUILayout.PropertyField(backColorGradient4);
+                    }
                     GUILayout.Space(5);
                     EditorGUILayout.LabelField("Top Color",headerStyle);
                     EditorGUILayout.PropertyField(frontColorGradient5);
@@ -159,8 +168,11 @@ namespace Enviro
                     EditorGUILayout.LabelField("Distribution",headerStyle);
                     EditorGUILayout.PropertyField(distribution0);
                     EditorGUILayout.PropertyField(distribution1);
+                    if(myTarget.Settings.skyMode == EnviroSky.SkyMode.Normal)
+                    {
                     EditorGUILayout.PropertyField(distribution2);
                     EditorGUILayout.PropertyField(distribution3);
+                    }
                     GUILayout.Space(5);
                     EditorGUILayout.LabelField("Intensity",headerStyle);
                     EditorGUILayout.PropertyField(intensity);
@@ -229,11 +241,13 @@ namespace Enviro
                     GUILayout.Space(10);
                     EditorGUILayout.LabelField("Textures",headerStyle);
                     EditorGUILayout.PropertyField(starsTex);
-                    EditorGUILayout.PropertyField(starsTwinklingTex);              
+                    EditorGUILayout.PropertyField(starsTwinklingTex);  
+                    if(myTarget.Settings.skyMode == EnviroSky.SkyMode.Normal)            
                     EditorGUILayout.PropertyField(galaxyTex);
                     GUILayout.Space(5);
                     EditorGUILayout.LabelField("Intensity",headerStyle);
                     EditorGUILayout.PropertyField(starIntensityCurve);
+                    if(myTarget.Settings.skyMode == EnviroSky.SkyMode.Normal)
                     EditorGUILayout.PropertyField(galaxyIntensityCurve);
                     EditorGUILayout.PropertyField(starsTwinklingSpeed);
 

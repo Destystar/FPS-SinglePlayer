@@ -68,7 +68,8 @@ namespace Enviro
 
         public ComputeBuffer clearZoneCB;
         public ComputeBuffer removeZoneParamsCB;
-        public ComputeBuffer clearCB;
+        public ComputeBuffer clearCBPoint;
+        public ComputeBuffer clearCBSpot;
 
         ZoneParams[] removalZoneParams;
 
@@ -354,7 +355,7 @@ namespace Enviro
         }
 
         // Set the solar and lunar time based on sun rotation.
-        private void UpdateNonTime()
+        public void UpdateNonTime()
         {
             if(Objects.sun != null)
             {

@@ -45,6 +45,8 @@ namespace EmeraldAI
         public event OnNullTargetHandler OnNullTarget;
         public delegate void OnPlayerDetectedHandler();
         public event OnPlayerDetectedHandler OnPlayerDetected;
+        public delegate void OnTargetObstructedHandler();
+        public event OnTargetObstructedHandler OnTargetObstructed;
         public static List<Transform> IgnoredTargetsList = new List<Transform>();
         #endregion
 
@@ -145,8 +147,9 @@ namespace EmeraldAI
         /// <summary>
         /// Sets up the Factions to be used during runtime.
         /// </summary>
-        void SetupFactions()
+        public void SetupFactions()
         {
+            FactionRelations.Clear();
             for (int i = 0; i < FactionRelationsList.Count; i++)
             {
                 AIFactionsList.Add(FactionRelationsList[i].FactionIndex);
@@ -244,18 +247,26 @@ namespace EmeraldAI
                     {
                         SearchForTarget(PickTargetTypes.Random);
                     }
-                    else if (ObstructionType == ObstructedTypes.Other)
+                    else if (ObstructionType == ObstructedTypes.Other && EmeraldComponent.CoverComponent == null)
                     {
                         EmeraldComponent.m_NavMeshAgent.stoppingDistance = 3;
                         EmeraldAPI.Internal.GenerateRandomPositionWithinRadius(EmeraldComponent);
                     }
 
+                    OnTargetObstructed?.Invoke(); //Invoke the OnTargetObstructed event
                     ObstructionTimer = 0;
                 }
             }
             else if (!TargetObstructed && EmeraldComponent.CombatComponent.CombatState && !EmeraldComponent.AnimationComponent.IsBackingUp)
             {
-                EmeraldComponent.m_NavMeshAgent.stoppingDistance = EmeraldComponent.CombatComponent.AttackDistance;
+                if (EmeraldComponent.CoverComponent == null)
+                {
+                    EmeraldComponent.m_NavMeshAgent.stoppingDistance = EmeraldComponent.CombatComponent.AttackDistance;
+                }
+                else if (EmeraldComponent.CoverComponent.CoverState != EmeraldCover.CoverStates.MovingToCover)
+                {
+                    EmeraldComponent.m_NavMeshAgent.stoppingDistance = EmeraldComponent.CombatComponent.AttackDistance;
+                }
             }
         }
 
@@ -287,9 +298,6 @@ namespace EmeraldAI
             if (IgnoredTargetsList.Contains(Target))
                 return;
 
-            //Clean up
-            //if (Target != EmeraldComponent.TargetToFollow && !CurrentFollowers.Contains(Target) && IsEnemyTarget(Target) && EmeraldComponent.BehaviorsComponent.CurrentBehaviorType != EmeraldBehaviors.BehaviorTypes.Passive)
-            //if (Target != EmeraldComponent.TargetToFollow && !CurrentFollowers.Contains(Target) && EmeraldComponent.BehaviorsComponent.CurrentBehaviorType != EmeraldBehaviors.BehaviorTypes.Passive)
             if (EmeraldComponent.BehaviorsComponent.CurrentBehaviorType != EmeraldBehaviors.BehaviorTypes.Passive)
             {
                 if (IsEnemyTarget(Target))
@@ -332,11 +340,11 @@ namespace EmeraldAI
                     }
                     else
                     {
-                        Vector3 direction = LineOfSightTargets[i].bounds.center - HeadTransform.position;
+                        Vector3 targetTop = new Vector3(LineOfSightTargets[i].bounds.center.x, LineOfSightTargets[i].bounds.max.y, LineOfSightTargets[i].bounds.center.z);
+                        Vector3 direction = targetTop - HeadTransform.position;
                         float angle = Vector3.Angle(new Vector3(direction.x, 0, direction.z), transform.forward);
 
                         //Only check targets that are within the AI's line of sight.
-                        //if (angle < FieldOfViewAngle * 0.5f)
                         float fieldOfView = EmeraldComponent.CombatComponent.CombatState ? 360f : FieldOfViewAngle * 0.5f;
                         if (angle < fieldOfView)
                         {
@@ -355,7 +363,8 @@ namespace EmeraldAI
                             }
                             else if (EmeraldComponent.CombatComponent.CombatState && LineOfSightTargets.Count > 0)
                             {
-                                SearchForTarget(PickTargetType);
+                                //SearchForTarget(PickTargetType);
+                                SearchForTarget(PickTargetTypes.Closest);
                                 break;
                             }
                         }
@@ -374,8 +383,9 @@ namespace EmeraldAI
             foreach (Collider C in LineOfSightTargets.ToArray())
             {
                 RaycastHit hit;
-                Vector3 direction = C.bounds.center - HeadTransform.position;
-                
+                Vector3 targetTop = new Vector3(C.bounds.center.x, C.bounds.max.y, C.bounds.center.z);
+                Vector3 direction = targetTop - HeadTransform.position;
+
                 if (Physics.Raycast(HeadTransform.position, direction, out hit, DetectionRadius, ~InternalObstructionLayerMask))
                 {
                     if (hit.collider != null && LineOfSightTargets.Contains(hit.collider))
@@ -397,14 +407,14 @@ namespace EmeraldAI
         public void SearchForTarget (PickTargetTypes pickTargetType)
         {
             List<Transform> VisibleTargets = GetVisibleTargets();
-            if (EmeraldComponent.CombatTarget != null) VisibleTargets.Remove(EmeraldComponent.CombatTarget); //Remove the current target so it isn't picked again
+            if (EmeraldComponent.CombatTarget != null && pickTargetType != PickTargetTypes.Closest) VisibleTargets.Remove(EmeraldComponent.CombatTarget); //Remove the current target so it isn't picked again
 
             if (VisibleTargets.Count > 0)
             {
                 if (pickTargetType == PickTargetTypes.Closest)
                 {
-                    VisibleTargets = VisibleTargets.OrderBy(Target => (Target.position - transform.position).sqrMagnitude).ToList();
-                    SetDetectedTarget(VisibleTargets[0]);
+                    LineOfSightTargets = LineOfSightTargets.OrderBy(Target => (Target.transform.position - transform.position).sqrMagnitude).ToList();
+                    SetDetectedTarget(LineOfSightTargets[0].transform);
                 }
                 else if (pickTargetType == PickTargetTypes.Random)
                 {
@@ -413,6 +423,24 @@ namespace EmeraldAI
                 else if (pickTargetType == PickTargetTypes.FirstDetected)
                 {
                     SetDetectedTarget(VisibleTargets[0]);
+                }
+            }
+            //Only bypass VisibleTargets if there are no currently visible targets. This can sometimes happen if an target happens to be obstructed right when a search is being made.
+            //If a target is within the AI's detection range and this AI's CombatState is active, it's likely that the target is also in combat.
+            else if (EmeraldComponent.CombatComponent.CombatState)
+            {
+                if (pickTargetType == PickTargetTypes.Closest)
+                {
+                    LineOfSightTargets = LineOfSightTargets.OrderBy(Target => (Target.transform.position - transform.position).sqrMagnitude).ToList();
+                    SetDetectedTarget(LineOfSightTargets[0].transform);
+                }
+                else if (pickTargetType == PickTargetTypes.Random)
+                {
+                    SetDetectedTarget(LineOfSightTargets[Random.Range(0, LineOfSightTargets.Count)].transform);
+                }
+                else if (pickTargetType == PickTargetTypes.FirstDetected)
+                {
+                    SetDetectedTarget(LineOfSightTargets[0].transform);
                 }
             }
         }

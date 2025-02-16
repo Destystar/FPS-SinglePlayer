@@ -11,7 +11,7 @@ namespace Enviro
         private EnviroTimeModule myTarget; 
 
         //Properties
-        private SerializedProperty simulate,latitude,longitude,utcOffset,cycleLengthInMinutes,dayLengthModifier,nightLengthModifier;  
+        private SerializedProperty simulate,latitude,longitude,utcOffset,cycleLengthInMinutes,dayLengthModifier,nightLengthModifier,calenderType,daysInMonth,monthsInYear,customSunOffset,customSunRotation;  
 
         //On Enable
         public override void OnEnable()
@@ -26,7 +26,13 @@ namespace Enviro
             latitude = serializedObj.FindProperty("Settings.latitude");
             longitude = serializedObj.FindProperty("Settings.longitude");
             utcOffset = serializedObj.FindProperty("Settings.utcOffset");
+            calenderType = serializedObj.FindProperty("Settings.calenderType");
+            daysInMonth = serializedObj.FindProperty("Settings.daysInMonth");
+            monthsInYear = serializedObj.FindProperty("Settings.monthsInYear");
 
+            customSunOffset = serializedObj.FindProperty("Settings.customSunOffset");
+            customSunRotation = serializedObj.FindProperty("Settings.customSunRotation");
+ 
             cycleLengthInMinutes = serializedObj.FindProperty("Settings.cycleLengthInMinutes");
             dayLengthModifier = serializedObj.FindProperty("Settings.dayLengthModifier");
             nightLengthModifier = serializedObj.FindProperty("Settings.nightLengthModifier");
@@ -70,7 +76,8 @@ namespace Enviro
                     EditorGUI.BeginChangeCheck();
                     GUILayout.Space(10); 
                     EditorGUILayout.LabelField("Time", headerStyle);
- 
+   
+
                     int secT,minT,hoursT,daysT,monthsT,yearsT = 0;
 
                     secT = EditorGUILayout.IntSlider("Second", myTarget.seconds,0,60);
@@ -78,8 +85,18 @@ namespace Enviro
                     hoursT = EditorGUILayout.IntSlider("Hour", myTarget.hours,0,24);
                     GUILayout.Space(10);
                     EditorGUILayout.LabelField("Date", headerStyle);
-                    daysT = EditorGUILayout.IntSlider("Day", myTarget.days,1,32);
-                    monthsT = EditorGUILayout.IntSlider("Month", myTarget.months,1,13);
+                    EditorGUILayout.PropertyField(calenderType);
+                     if(myTarget.Settings.calenderType == EnviroTime.CalenderType.Custom)
+                     {
+                        daysT =  EditorGUILayout.IntSlider("Day", myTarget.days,1,myTarget.Settings.daysInMonth);
+                        monthsT = EditorGUILayout.IntSlider("Month", myTarget.months,1,myTarget.Settings.monthsInYear);
+                     }
+                     else
+                     {
+                        daysT = EditorGUILayout.IntSlider("Day", myTarget.days,1,31);
+                        monthsT = EditorGUILayout.IntSlider("Month", myTarget.months,1,12);
+                     }
+
                     yearsT = EditorGUILayout.IntSlider("Year", myTarget.years,1,3000);
                     if (EditorGUI.EndChangeCheck())
                     {
@@ -91,6 +108,16 @@ namespace Enviro
                         myTarget.months = monthsT;
                         myTarget.years = yearsT;
                         EditorUtility.SetDirty(myTarget);
+                    }
+                    if(myTarget.Settings.calenderType == EnviroTime.CalenderType.Custom)
+                    {
+                        GUILayout.Space(10);
+                        EditorGUILayout.LabelField("Custom Calender Settings", headerStyle);
+                        EditorGUILayout.PropertyField(daysInMonth);
+                        EditorGUILayout.PropertyField(monthsInYear);
+                        GUILayout.Space(10);
+                        EditorGUILayout.PropertyField(customSunOffset); 
+                        EditorGUILayout.PropertyField(customSunRotation);
                     }
                     GUILayout.Space(10);
                     EditorGUILayout.LabelField("Progression", headerStyle);
@@ -108,18 +135,20 @@ namespace Enviro
 
                 if(myTarget.showTimeControls)
                     GUILayout.Space(10);
-
-                GUI.backgroundColor = categoryModuleColor;
-                GUILayout.BeginVertical("",boxStyleModified);
-                GUI.backgroundColor = Color.white;
-                myTarget.showLocationControls = GUILayout.Toggle(myTarget.showLocationControls, "Location Controls", headerFoldout);            
-                if(myTarget.showLocationControls)
+                if(myTarget.Settings.calenderType == EnviroTime.CalenderType.Realistic)
                 {
-                    EditorGUILayout.PropertyField(latitude);
-                    EditorGUILayout.PropertyField(longitude);            
-                    EditorGUILayout.PropertyField(utcOffset);
-                }  
-                GUILayout.EndVertical();
+                    GUI.backgroundColor = categoryModuleColor;
+                    GUILayout.BeginVertical("",boxStyleModified);
+                    GUI.backgroundColor = Color.white;
+                    myTarget.showLocationControls = GUILayout.Toggle(myTarget.showLocationControls, "Location Controls", headerFoldout);            
+                    if(myTarget.showLocationControls)
+                    {
+                        EditorGUILayout.PropertyField(latitude);
+                        EditorGUILayout.PropertyField(longitude);            
+                        EditorGUILayout.PropertyField(utcOffset);
+                    }  
+                    GUILayout.EndVertical();
+                }
                 
                 if(myTarget.showLocationControls)
                     GUILayout.Space(10);

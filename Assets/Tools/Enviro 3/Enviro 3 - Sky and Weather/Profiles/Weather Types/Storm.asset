@@ -14,13 +14,13 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   showEditor: 0
   showEffectControls: 0
-  showCloudControls: 1
+  showCloudControls: 0
   showFlatCloudControls: 0
   showFogControls: 0
   showSkyControls: 0
   showLightingControls: 0
   showAuroraControls: 0
-  showEnvironmentControls: 1
+  showEnvironmentControls: 0
   showAudioControls: 0
   showAmbientAudioControls: 0
   showWeatherAudioControls: 0
@@ -28,22 +28,22 @@ MonoBehaviour:
   cloudsOverride:
     ambientLightIntensity: 0.187
     showLayer1: 0
-    coverageLayer1: 0.57
+    coverageLayer1: 0.163
     dilateCoverageLayer1: 1
     dilateTypeLayer1: 0.233
     typeModifierLayer1: 0.804
-    anvilBiasLayer1: 0.651
-    scatteringIntensityLayer1: 0.134
-    multiScatteringALayer1: 0.187
+    anvilBiasLayer1: 0.415
+    scatteringIntensityLayer1: 0.128
+    multiScatteringALayer1: 0.386
     multiScatteringBLayer1: 0.497
     multiScatteringCLayer1: 0.444
     powderIntensityLayer1: 0.219
     silverLiningSpreadLayer1: 0.8
     ligthAbsorbtionLayer1: 1.525
-    densityLayer1: 0.2
-    densitySmoothnessLayer1: 1.65
+    densityLayer1: 0.134
+    densitySmoothnessLayer1: 1.584
     baseErosionIntensityLayer1: 0
-    detailErosionIntensityLayer1: 0.8
+    detailErosionIntensityLayer1: 0.693
     curlIntensityLayer1: 0.2
     showLayer2: 0
     coverageLayer2: -1
@@ -67,14 +67,15 @@ MonoBehaviour:
     cirrusCloudsAlpha: 0
     cirrusCloudsCoverage: 0
     cirrusCloudsColorPower: 1
-    flatCloudsCoverage: 0
+    flatCloudsCoverage: 2
     flatCloudsDensity: 1
-    flatCloudsLightIntensity: 1
+    flatCloudsLightIntensity: 0.099
     flatCloudsAmbientIntensity: 1
-    flatCloudsAbsorbtion: 0.6
+    flatCloudsAbsorbtion: 0.782
   lightingOverride:
     directLightIntensityModifier: 0.33
     ambientIntensityModifier: 0.5
+    shadowIntensity: 1
   skyOverride:
     intensity: 1
     skyColorTint: {r: 1, g: 1, b: 1, a: 1}

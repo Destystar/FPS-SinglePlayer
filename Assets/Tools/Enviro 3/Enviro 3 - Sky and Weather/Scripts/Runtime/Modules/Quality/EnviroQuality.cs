@@ -6,7 +6,12 @@ using System;
 
 namespace Enviro
 {
-
+	[Serializable]   
+	public class EnviroSkyQualitySettings
+	{
+		public EnviroSky.SkyMode skyMode = EnviroSky.SkyMode.Normal;
+	}
+ 
 	[Serializable]   
 	public class EnviroVolumetricCloudsQualitySettings
 	{
@@ -36,9 +41,17 @@ namespace Enviro
 	}
 
 	[Serializable]   
+	public class EnviroEffectsQualitySettings
+	{
+	  [Range(0f,2f)]
+	  public float particeEmissionRateModifier = 1f;
+	}
+
+	[Serializable]   
 	public class EnviroFogQualitySettings
 	{
 		public bool fog = true; 
+		public EnviroFogSettings.FogQualityMode fogQualityMode = EnviroFogSettings.FogQualityMode.Normal;
 		public bool volumetrics = true;
 		public bool unityFog = false;
 		public EnviroFogSettings.Quality quality;
@@ -50,12 +63,13 @@ namespace Enviro
 	public class EnviroQuality : ScriptableObject
 	{
 		//Inspector 
-		public bool showEditor, showVolumeClouds, showFog, showFlatClouds, showEffects, showAurora;
-		//Volumetric Clouds
+		public bool showEditor, showSky, showVolumeClouds, showFog, showFlatClouds, showEffects, showAurora;
+		public EnviroSkyQualitySettings skyOverride;
 		public EnviroVolumetricCloudsQualitySettings volumetricCloudsOverride;
 		public EnviroFogQualitySettings fogOverride;
 		public EnviroFlatCloudsQualitySettings flatCloudsOverride;
 		public EnviroAuroraQualitySettings auroraOverride;
+		public EnviroEffectsQualitySettings effectsOverride;
 	}
 
 

@@ -11,7 +11,7 @@ namespace EmeraldAI.Utility
         /// <summary>
         /// Creates a unique copy of the passed Animation Profile and clears the copy's Animator Controller.
         /// </summary>
-        public static void CopyAnimationProfile (AnimationProfile AnimationProfileRef)
+        public static void CopyAnimationProfile(AnimationProfile AnimationProfileRef)
         {
             var SerializedReferenceAP = new SerializedObject(AnimationProfileRef);
 
@@ -60,7 +60,7 @@ namespace EmeraldAI.Utility
             ApplyNonCombatAnimations(EmeraldAnimationComponent, m_AnimatorController);
             ApplyType1Animations(EmeraldAnimationComponent, m_AnimatorController);
             ApplyType2Animations(EmeraldAnimationComponent, m_AnimatorController);
-            
+
             EmeraldAnimationComponent.AnimatorControllerGenerated = true;
             EmeraldAnimationComponent.AnimationsUpdated = false;
             EmeraldAnimationComponent.AnimationListsChanged = false;
@@ -239,10 +239,17 @@ namespace EmeraldAI.Utility
                 SetState(childAnimatorStateMachine, "Attack States (Type 1)", childAnimatorState, EmeraldAnimationComponent.Type1Animations.AttackList);
                 SetState(childAnimatorStateMachine, "Death States (Type 1)", childAnimatorState, EmeraldAnimationComponent.Type1Animations.DeathList);
 
+                //Strafe
                 AnimationClass[] Type1StrafeList = new AnimationClass[2] { EmeraldAnimationComponent.Type1Animations.StrafeLeft, EmeraldAnimationComponent.Type1Animations.StrafeRight };
                 SetState(childAnimatorStateMachine, "Strafe States (Type 1)", childAnimatorState, Type1StrafeList.ToList());
+
+                //Dodge
                 AnimationClass[] Type1DodgeList = new AnimationClass[3] { EmeraldAnimationComponent.Type1Animations.DodgeLeft, EmeraldAnimationComponent.Type1Animations.DodgeRight, EmeraldAnimationComponent.Type1Animations.DodgeBack };
                 SetState(childAnimatorStateMachine, "Dodge States (Type 1)", childAnimatorState, Type1DodgeList.ToList());
+
+                //Cover
+                AnimationClass[] Type1CoverList = new AnimationClass[2] { EmeraldAnimationComponent.Type1Animations.CoverHit, EmeraldAnimationComponent.Type1Animations.CoverIdle };
+                SetState(childAnimatorStateMachine, "Cover States (Type 1)", childAnimatorState, Type1CoverList.ToList());
             }
 
             //Go through each state by name and assign the animation to the proper state
@@ -413,10 +420,17 @@ namespace EmeraldAI.Utility
                 SetState(childAnimatorStateMachine, "Attack States (Type 2)", childAnimatorState, EmeraldAnimationComponent.Type2Animations.AttackList);
                 SetState(childAnimatorStateMachine, "Death States (Type 2)", childAnimatorState, EmeraldAnimationComponent.Type2Animations.DeathList);
 
+                //Strafe
                 AnimationClass[] Type2StrafeList = new AnimationClass[2] { EmeraldAnimationComponent.Type2Animations.StrafeLeft, EmeraldAnimationComponent.Type2Animations.StrafeRight };
                 SetState(childAnimatorStateMachine, "Strafe States (Type 2)", childAnimatorState, Type2StrafeList.ToList());
+
+                //Dodge
                 AnimationClass[] Type2DodgeList = new AnimationClass[3] { EmeraldAnimationComponent.Type2Animations.DodgeLeft, EmeraldAnimationComponent.Type2Animations.DodgeRight, EmeraldAnimationComponent.Type2Animations.DodgeBack };
                 SetState(childAnimatorStateMachine, "Dodge States (Type 2)", childAnimatorState, Type2DodgeList.ToList());
+
+                //Cover
+                AnimationClass[] Type2CoverList = new AnimationClass[2] { EmeraldAnimationComponent.Type2Animations.CoverHit, EmeraldAnimationComponent.Type2Animations.CoverIdle };
+                SetState(childAnimatorStateMachine, "Cover States (Type 2)", childAnimatorState, Type2CoverList.ToList());
             }
 
             //Go through each state by name and assign the animation to the proper state

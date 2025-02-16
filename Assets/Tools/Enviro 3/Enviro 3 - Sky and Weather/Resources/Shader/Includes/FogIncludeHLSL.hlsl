@@ -1,7 +1,9 @@
-#include "SkyInclude.cginc"
+#include "SkyIncludeHLSL.hlsl"
 #include "VolumetricCloudsBlendIncludeHLSL.hlsl"
 
 #pragma multi_compile __ ENVIRO_VOLUMELIGHT
+#pragma multi_compile __ ENVIRO_SIMPLESKY 
+#pragma multi_compile __ ENVIRO_SIMPLEFOG
  
 TEXTURE2D_X(_EnviroVolumetricFogTex);
 SAMPLER(sampler_EnviroVolumetricFogTex);
@@ -146,7 +148,11 @@ float4 GetExponentialHeightFog(float3 wPos, float linearDepth)
     float ExponentSecond = _EnviroFogParameters2.y * (camHeightLimiter - _EnviroFogParameters2.w);
     float RayOriginTermsSecond = _EnviroFogParameters2.z * exp2(-ExponentSecond); 
 
+    #if ENVIRO_SIMPLEFOG
+    fogAmount = CalculateLineIntegral(_EnviroFogParameters.y, RayDirectionY, RayOriginTerms) * RayLength;
+    #else
     fogAmount = (CalculateLineIntegral(_EnviroFogParameters.y, RayDirectionY, RayOriginTerms) + CalculateLineIntegral(_EnviroFogParameters2.y, RayDirectionY, RayOriginTermsSecond)) * RayLength;
+    #endif
 
     //Start Distance
     if(length(CameraToReceiver) <= _EnviroFogParameters3.y)
@@ -163,7 +169,11 @@ float4 GetExponentialHeightFog(float3 wPos, float linearDepth)
     float fogfactor = max(exp2(-fogAmount), MinFogOpacity);
     
     // Color  
+    #if ENVIRO_SIMPLESKY
+    float4 sky = GetSkyColorSimple(viewDirection,0.005f);
+    #else
     float4 sky = GetSkyColor(viewDirection,0.005f);
+    #endif
     float3 inscatterColor = lerp(_EnviroFogColor.rgb,sky.rgb,_EnviroFogParameters3.w);
     float3 fogColor = inscatterColor * saturate(1 - fogfactor);
 

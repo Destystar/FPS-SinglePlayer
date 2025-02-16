@@ -52,7 +52,7 @@ namespace EmeraldAI
         {
             EmeraldComponent = GetComponent<EmeraldSystem>();
             EmeraldComponent.LBDComponent = this;
-            EmeraldComponent.AIBoxCollider.size = new Vector3(0.015f, 0.015f, 0.015f);
+            EmeraldComponent.AIBoxCollider.size = new Vector3(0.015f, EmeraldComponent.AIBoxCollider.size.y, 0.015f);
             EmeraldComponent.AIBoxCollider.center = Vector3.zero;
             EmeraldComponent.AIBoxCollider.center = Vector3.up * transform.localScale.y;
             EmeraldComponent.AIBoxCollider.isTrigger = true;

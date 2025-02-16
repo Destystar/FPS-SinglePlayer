@@ -110,7 +110,7 @@ namespace KINEMATION.FPSAnimationFramework.Runtime.Layers.IkLayer
 
                 if (_settings.offsetFeetTargets)
                 {
-                    rootTransform.rotation *= Quaternion.Euler(0f, _turnOffset, 0f);
+                    rootTransform.rotation *= Quaternion.Euler(0f, -_turnOffset, 0f);
                 }
                 
                 rightFootGoal = rootTransform.GetWorldTransform(rightFootGoal, false);

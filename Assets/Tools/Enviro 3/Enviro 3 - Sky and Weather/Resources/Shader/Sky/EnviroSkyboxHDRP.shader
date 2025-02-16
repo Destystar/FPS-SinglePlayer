@@ -12,6 +12,7 @@ Shader "Enviro/HDRP/Sky"
 	HLSLINCLUDE
 	#pragma editor_sync_compilation
 	#pragma multi_compile __ ENVIROHDRP 
+	#pragma multi_compile __ ENVIRO_SIMPLESKY
               
 	#if defined (ENVIROHDRP)
 	#include "Packages/com.unity.render-pipelines.core/ShaderLibrary/Common.hlsl"
@@ -122,14 +123,19 @@ Shader "Enviro/HDRP/Sky"
 
 
 		float3 viewDir = normalize(dir);
-		//float3 viewDir = normalize(i.texcoord);
-		skyColor = GetSkyColor(viewDir, 0.005f);  
+
+		#if ENVIRO_SIMPLESKY
+			skyColor = GetSkyColorSimple(viewDir, 0.005f);  
+		#else
+			skyColor = GetSkyColor(viewDir, 0.005f);  
+		#endif 
 
 		//Stars
 		float3 starsUV = mul((float3x3)_StarsMatrix, dir);
 		float4 starsTex = texCUBE(_StarsTex, starsUV) * saturate(viewDir.y);
 		float4 stars = starsTex * _StarIntensity * 10;
 
+		#ifndef ENVIRO_SIMPLESKY
 		if (_StarsTwinkling > 0)
 			{
 				float3 starsTwinklingUV = mul((float3x3)_StarsTwinklingMatrix, dir);
@@ -141,6 +147,7 @@ Shader "Enviro/HDRP/Sky"
 		//Galaxy
 		float4 galaxyTex = texCUBE(_GalaxyTex, starsUV) * saturate(viewDir.y);
 		float4 galaxy = galaxyTex * _GalaxyIntensity;
+		#endif
 
 
 		//Sun and Moon UV
@@ -171,13 +178,17 @@ Shader "Enviro/HDRP/Sky"
 			//float4 moonGlow = tex2D(_MoonGlowTex, i.moonGlowPos.xy) * hideBackMoon;
 			//moonGlow = moonGlow * _MoonColor * _MoonGlowIntensity;
 			skyColor += stars * starsBehindMoon;
+			#ifndef ENVIRO_SIMPLESKY
 			skyColor += galaxy * starsBehindMoon;
+			#endif
 			skyColor += moon;
 		}
 		else
 		{
 			skyColor += stars;
+			#ifndef ENVIRO_SIMPLESKY
 			skyColor += galaxy;
+			#endif
 		}
 		
 		//Aurora 
@@ -226,8 +237,11 @@ Shader "Enviro/HDRP/Sky"
 
 
 		float3 viewDir = normalize(dir);
-		//float3 viewDir = normalize(i.texcoord);
-		skyColor = GetSkyColor(viewDir, 0.005f) * _AmbientColorTintHDRP;  
+		#if ENVIRO_SIMPLESKY
+		skyColor = GetSkyColorSimple(viewDir, 0.005f);  
+		#else
+		skyColor = GetSkyColor(viewDir, 0.005f);  
+		#endif 
 
 		//Stars
 		float3 starsUV = mul((float3x3)_StarsMatrix, dir);
@@ -236,9 +250,10 @@ Shader "Enviro/HDRP/Sky"
 		//skyColor += stars;
 
 		//Galaxy
+		#ifndef ENVIRO_SIMPLESKY
 		float4 galaxyTex = texCUBE(_GalaxyTex, starsUV) * saturate(viewDir.y);
 		float4 galaxy = galaxyTex * _GalaxyIntensity;
-		//skyColor += galaxy;
+		#endif
 
 		//Sun and Moon UV
 		float3 rSun = normalize(cross(_SunDir.xyz, float3(0, -1, 0)));
@@ -268,13 +283,17 @@ Shader "Enviro/HDRP/Sky"
 			//float4 moonGlow = tex2D(_MoonGlowTex, i.moonGlowPos.xy) * hideBackMoon;
 			//moonGlow = moonGlow * _MoonColor * _MoonGlowIntensity;
 			skyColor += stars * starsBehindMoon;
+			#ifndef ENVIRO_SIMPLESKY
 			skyColor += galaxy * starsBehindMoon;
+			#endif
 			skyColor += moon;
 		}
 		else
 		{
 			skyColor += stars;
+			#ifndef ENVIRO_SIMPLESKY
 			skyColor += galaxy;
+			#endif
 		}
 		
 		//Aurora

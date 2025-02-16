@@ -45,6 +45,13 @@ namespace Enviro
         //Height Fog Settings
         public bool fog = true;
 
+        public enum FogQualityMode
+        {
+            Normal,
+            Simple
+        }
+
+        public FogQualityMode fogQualityMode;
         public Vector3 floatingPointOriginMod;
 
         public float globalFogHeight = 0f;
@@ -129,18 +136,18 @@ namespace Enviro
         //Fog Zones and Lights
         public List<EnviroVolumetricFogLight> fogLights = new List<EnviroVolumetricFogLight>();
         private Light myLight;
-
+        public float customFogDensityModifer = 1f;
         //Materials
         public Material fogMat;
         public Material volumetricsMat;
         public Material blurMat;
-
         public Material blurMat2;
 
         // Textures
         public RenderTexture volumetricsRenderTexture;
         #if ENVIRO_URP && UNITY_6000_0_OR_NEWER
         public UnityEngine.Rendering.RenderGraphModule.TextureHandle volumetricsRenderTextureHandle;
+        public UnityEngine.Rendering.RTHandle volumetricsRenderTextureRT;
         Material blitThroughMat;
         #endif
         //Point Lights
@@ -366,8 +373,18 @@ namespace Enviro
  
         public void UpdateFogShader (Camera cam) 
         {  
-            Shader.SetGlobalVector("_EnviroFogParameters", new Vector4(0f, Settings.fogHeightFalloff, Settings.fogDensity * 0.01f, Settings.fogHeight + Settings.globalFogHeight));
-            Shader.SetGlobalVector("_EnviroFogParameters2", new Vector4(0f, Settings.fogHeightFalloff2, Settings.fogDensity2 * 0.01f, Settings.fogHeight2 + Settings.globalFogHeight));
+            if(Settings.fogQualityMode == EnviroFogSettings.FogQualityMode.Simple)
+            {
+                Shader.EnableKeyword("ENVIRO_SIMPLEFOG");
+                Shader.SetGlobalVector("_EnviroFogParameters", new Vector4(0f, Settings.fogHeightFalloff, Settings.fogDensity * 0.01f * customFogDensityModifer, Settings.fogHeight + Settings.globalFogHeight));
+            }
+            else
+            {
+                Shader.DisableKeyword("ENVIRO_SIMPLEFOG");
+                Shader.SetGlobalVector("_EnviroFogParameters", new Vector4(0f, Settings.fogHeightFalloff, Settings.fogDensity * 0.01f * customFogDensityModifer, Settings.fogHeight + Settings.globalFogHeight));
+                Shader.SetGlobalVector("_EnviroFogParameters2", new Vector4(0f, Settings.fogHeightFalloff2, Settings.fogDensity2 * 0.01f * customFogDensityModifer, Settings.fogHeight2 + Settings.globalFogHeight));
+            }
+
             Shader.SetGlobalVector("_EnviroFogParameters3",new Vector4(1.0f - Settings.fogMaxOpacity,Settings.startDistance,0f,Settings.fogColorBlend));
             Shader.SetGlobalColor("_EnviroFogColor", Settings.ambientColorGradient.Evaluate(EnviroManager.instance.solarTime) * (Settings.fogColorMod * EnviroManager.instance.solarTime));
             if (EnviroManager.instance.Objects.worldAnchor != null) 
@@ -453,15 +470,18 @@ namespace Enviro
             if(EnviroManager.instance.clearZoneCB != null)
             EnviroHelper.ReleaseComputeBuffer(ref EnviroManager.instance.clearZoneCB);   
 
-            if(EnviroManager.instance.clearCB != null)
-            EnviroHelper.ReleaseComputeBuffer(ref EnviroManager.instance.clearCB);   
+            if(EnviroManager.instance.clearCBPoint != null)
+            EnviroHelper.ReleaseComputeBuffer(ref EnviroManager.instance.clearCBPoint);   
+
+            if(EnviroManager.instance.clearCBSpot != null)
+            EnviroHelper.ReleaseComputeBuffer(ref EnviroManager.instance.clearCBSpot);   
         }
 
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 ///       Volumetrics
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
+        
         public void RenderVolumetrics(Camera camera, RenderTexture source)
         {
             UnityEngine.Profiling.Profiler.BeginSample("Enviro Volumetrics Rendering");
@@ -494,10 +514,14 @@ namespace Enviro
             RenderTextureDescriptor desc = source.descriptor;
             desc.msaaSamples = 1;
 
-            if(volumetricsRenderTexture != null)
-            DestroyImmediate(volumetricsRenderTexture);
 
-            volumetricsRenderTexture = new RenderTexture(desc);
+            if(volumetricsRenderTexture == null || volumetricsRenderTexture.width != desc.width || volumetricsRenderTexture.height != desc.height)
+            {
+                if(volumetricsRenderTexture != null)
+                 DestroyImmediate(volumetricsRenderTexture);
+ 
+                volumetricsRenderTexture = new RenderTexture(desc);
+            }
 
         if(Settings.quality == EnviroFogSettings.Quality.High)
         {      
@@ -597,11 +621,10 @@ namespace Enviro
         }
 
         Shader.SetGlobalTexture("_EnviroVolumetricFogTex", volumetricsRenderTexture);
-
         UnityEngine.Profiling.Profiler.EndSample();
         }
 
-#if ENVIRO_URP
+#if ENVIRO_URP 
 
         public void RenderVolumetricsURP(Camera camera, EnviroURPRenderPass pass, UnityEngine.Rendering.CommandBuffer cmd, RenderTexture source)
         { 
@@ -637,10 +660,14 @@ namespace Enviro
             desc.msaaSamples = 1; 
             desc.depthBufferBits = 0;
 
-            if(volumetricsRenderTexture != null)
-            DestroyImmediate(volumetricsRenderTexture);
 
-            volumetricsRenderTexture = new RenderTexture(desc);
+            if(volumetricsRenderTexture == null || volumetricsRenderTexture.width != desc.width || volumetricsRenderTexture.height != desc.height)
+            {
+                if(volumetricsRenderTexture != null)
+                 DestroyImmediate(volumetricsRenderTexture);
+ 
+                volumetricsRenderTexture = new RenderTexture(desc);
+            }
 
         if(Settings.quality == EnviroFogSettings.Quality.High)
         {      
@@ -771,11 +798,16 @@ namespace Enviro
             desc.colorFormat = UnityEngine.Experimental.Rendering.GraphicsFormat.R16G16B16A16_SFloat;
             desc.msaaSamples = UnityEngine.Rendering.MSAASamples.None; 
             desc.depthBufferBits = 0;
+            
 
             RenderTextureDescriptor renderTextureDescriptor = new RenderTextureDescriptor(desc.width,desc.height,RenderTextureFormat.ARGBHalf,0);
-
-
-            volumetricsRenderTextureHandle = renderGraph.CreateTexture(desc);
+            renderTextureDescriptor.dimension = desc.dimension;
+            renderTextureDescriptor.volumeDepth = desc.slices;
+            
+            UnityEngine.Rendering.Universal.RenderingUtils.ReAllocateHandleIfNeeded(ref volumetricsRenderTextureRT, renderTextureDescriptor, FilterMode.Bilinear, TextureWrapMode.Clamp, name: "Enviro Volumetrics Mask" );
+            //volumetricsRenderTextureHandle = renderGraph.CreateTexture(desc); 
+            volumetricsRenderTextureHandle =  renderGraph.ImportTexture(volumetricsRenderTextureRT);
+           
 
         if(Settings.quality == EnviroFogSettings.Quality.High)
         {      
@@ -855,16 +887,15 @@ namespace Enviro
             // horizontal bilateral blur at half res 
             renderer.Blit("horizontal bilateral blur", renderGraph,blurMat,target,temp,8,depthQuarter, "_QuarterResDepthBuffer", target , "_QuarterResColor");     
             // vertical bilateral blur at half res
-            renderer.Blit("horizontal bilateral blur", renderGraph,blurMat2,temp,target,9,depthQuarter, "_QuarterResDepthBuffer");     
-             
+            renderer.Blit("horizontal bilateral blur", renderGraph,blurMat2,temp,target,9,depthQuarter, "_QuarterResDepthBuffer");         
             // upscale to full res 
             renderer.Blit("upscale", renderGraph,blurMat,target,volumetricsRenderTextureHandle,7,depthQuarter,"_QuarterResDepthBuffer", target , "_QuarterResColor");
     
         }
-           // if(Settings.volumetrics == true || cameraData.cameraType != CameraType.Reflection)
-           // {  
-           // Shader.SetGlobalTexture("_EnviroVolumetricFogTex", volumetricsRenderTextureHandle);
-           // }
+            if(Settings.volumetrics == true || cameraData.cameraType != CameraType.Reflection && volumetricsRenderTextureRT != null) 
+            {   
+               Shader.SetGlobalTexture("_EnviroVolumetricFogTex", volumetricsRenderTextureRT);
+            }
         }
 #endif
 #endif
@@ -929,8 +960,9 @@ namespace Enviro
 
             EnviroHelper.CreateBuffer(ref m_PointLightParamsCB, pointLightCount, Marshal.SizeOf(typeof(PointLightParams)));
             EnviroHelper.CreateBuffer(ref m_SpotLightParamsCB, spotLightCount, Marshal.SizeOf(typeof(SpotLightParams)));
-            EnviroHelper.CreateBuffer(ref EnviroManager.instance.clearCB, 1, 4);
-        } 
+            EnviroHelper.CreateBuffer(ref EnviroManager.instance.clearCBPoint, 1, Marshal.SizeOf(typeof(PointLightParams)));
+            EnviroHelper.CreateBuffer(ref EnviroManager.instance.clearCBSpot, 1, Marshal.SizeOf(typeof(SpotLightParams)));
+        }  
 
         private void CleanupVolumetrics()
         {
@@ -945,7 +977,8 @@ namespace Enviro
 
             EnviroHelper.ReleaseComputeBuffer(ref m_PointLightParamsCB);
             EnviroHelper.ReleaseComputeBuffer(ref m_SpotLightParamsCB);
-            EnviroHelper.ReleaseComputeBuffer(ref EnviroManager.instance.clearCB);  
+            EnviroHelper.ReleaseComputeBuffer(ref EnviroManager.instance.clearCBSpot);  
+            EnviroHelper.ReleaseComputeBuffer(ref EnviroManager.instance.clearCBPoint);  
         }
 
         void SetUpPointLightBuffers()
@@ -956,7 +989,7 @@ namespace Enviro
             if (count == 0)
             {
                 // Can't not set the buffer
-                volumetricsMat.SetBuffer("_PointLights", EnviroManager.instance.clearCB);
+                volumetricsMat.SetBuffer("_PointLights", EnviroManager.instance.clearCBPoint);
                 return;
             }
  
@@ -994,7 +1027,7 @@ namespace Enviro
             if (count == 0)
             {
                 // Can't not set the buffer
-                volumetricsMat.SetBuffer("_SpotLights", EnviroManager.instance.clearCB);
+                volumetricsMat.SetBuffer("_SpotLights", EnviroManager.instance.clearCBSpot);
                 return; 
             }
 

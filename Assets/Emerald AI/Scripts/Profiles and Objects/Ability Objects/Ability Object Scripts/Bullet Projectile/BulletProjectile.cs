@@ -90,57 +90,70 @@ namespace EmeraldAI
         IEnumerator MoveProjectile()
         {
             bool Collided = false;
-            float CollisionCheckTimer = 0;
+            float collisionCheckTimer = 0;
             Vector3 EndPosition = Vector3.zero;
-            Vector3 Accuracy = new Vector3(Random.Range(-CurrentAbilityData.BulletProjectileSettings.BulletSpreadX, CurrentAbilityData.BulletProjectileSettings.BulletSpreadX) * 0.001f, 
-                Random.Range(-CurrentAbilityData.BulletProjectileSettings.BulletSpreadY, CurrentAbilityData.BulletProjectileSettings.BulletSpreadY) * 0.001f, 0);
+
+            //Add a random offset for bullet spread based on the BulletSpread settings
+            Vector3 Accuracy = new Vector3(
+                Random.Range(-CurrentAbilityData.BulletProjectileSettings.BulletSpreadX, CurrentAbilityData.BulletProjectileSettings.BulletSpreadX) * 0.001f,
+                Random.Range(-CurrentAbilityData.BulletProjectileSettings.BulletSpreadY, CurrentAbilityData.BulletProjectileSettings.BulletSpreadY) * 0.001f,
+                0);
+
+            Vector3 lastCheckPosition = transform.position;
 
             while (!Collided)
             {
-                var step = CurrentAbilityData.BulletProjectileSettings.BulletSpeed * Time.deltaTime;
-                transform.position = Vector3.MoveTowards(transform.position, transform.position + transform.forward + Accuracy, step);
-                CollisionCheckTimer += Time.deltaTime;
+                //Move bullet every frame
+                float step = CurrentAbilityData.BulletProjectileSettings.BulletSpeed * Time.deltaTime;
+                Vector3 nextPosition = Vector3.MoveTowards(
+                    transform.position,
+                    transform.position + (transform.forward + Accuracy),
+                    step);
 
-                //Only check for collisions every tick according to CollisionCheckSpeed.
-                if (CollisionCheckTimer >= CurrentAbilityData.BulletProjectileSettings.CollisionCheckSpeed)
+                transform.position = nextPosition;
+
+                collisionCheckTimer += Time.deltaTime;
+
+                //If enough time has passed, do a single collision check
+                if (collisionCheckTimer >= CurrentAbilityData.BulletProjectileSettings.CollisionCheckSpeed)
                 {
-                    //In order to have reliable collisions for fast moving bullets, a raycast needs to be cast continiously while it travels towards its target.
-                    //It has a forward offset of 0.65 units, which allows for reliable collision detection.
+                    //Perform the raycast from lastCheckPosition to the current position
+                    Vector3 travelVector = transform.position - lastCheckPosition;
+                    float travelDistance = travelVector.magnitude;
+
                     RaycastHit hit;
-                    //Debug.DrawRay(transform.position, transform.TransformDirection(Vector3.forward) * 0.5f);
-                    if (Physics.Raycast(transform.position, transform.TransformDirection(Vector3.forward), out hit, 0.65f, ~CurrentAbilityData.BulletProjectileSettings.IgnoreLayers))
+                    if (Physics.Raycast(lastCheckPosition, travelVector.normalized, out hit, travelDistance, ~CurrentAbilityData.BulletProjectileSettings.IgnoreLayers))
                     {
-                        //When the raycast hits something, call the impact function to check to see if the collider can take damage. Store the end hit.point to be used below.
-                        if (hit.collider != null)
-                        {
-                            EndPosition = hit.point + (transform.TransformDirection(Vector3.forward) * 0.1f);
-                            Impact(hit.collider.gameObject, hit.point, hit.normal);
-                            Collided = true;
-                        }
+                        EndPosition = hit.point + (transform.forward * 0.1f);
+                        Impact(hit.collider.gameObject, hit.point, hit.normal);
+                        Collided = true;
                     }
 
-                    CollisionCheckTimer = 0;
+                    //Reset the timer and update the last check position
+                    collisionCheckTimer = 0f;
+                    lastCheckPosition = transform.position;
                 }
 
+                //Stop moving, if there was a collision
+                if (Collided) break;
+
+                //If not, wait until the next frame
                 yield return null;
             }
 
-            Vector3 StartingPosition = transform.position;
-            float t = 0;
-            bool Complete = false;
+            //Finish traveling the last bit so the bullet’s trail can get to the collision point
+            Vector3 startingPosition = transform.position;
+            float t = 0f;
+            bool complete = false;
 
-            while (!Complete)
+            while (!complete)
             {
-                //Since the raycast is stopped 0.5 units in front of the hit collider, finish up the rest of the distance
-                //for the bullet to allow the bullet trail to reach the impact position.
-                float Distance = Vector3.Distance(transform.position, EndPosition);
+                float distance = Vector3.Distance(transform.position, EndPosition);
                 t += Time.deltaTime * CurrentAbilityData.BulletProjectileSettings.BulletSpeed;
-                transform.position = Vector3.Lerp(StartingPosition, EndPosition, t);
+                transform.position = Vector3.Lerp(startingPosition, EndPosition, t);
 
-                if (Distance <= 0)
-                {
-                    Complete = true;
-                }
+                if (distance <= 0)
+                    complete = true;
 
                 yield return null;
             }

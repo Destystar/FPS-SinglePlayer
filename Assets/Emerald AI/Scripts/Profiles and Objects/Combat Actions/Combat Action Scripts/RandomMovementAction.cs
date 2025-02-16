@@ -29,6 +29,9 @@ namespace EmeraldAI
         /// </summary>
         void RandomMovementActionUpdate(EmeraldSystem EmeraldComponent, ActionsClass ActionClass)
         {
+            //Return if the Cover Component is present as this Combat Action could interfere with its functionality
+            if (EmeraldComponent.CoverComponent) return;
+
             if (!ActionClass.IsActive)
             {
                 if (CanExecute(EmeraldComponent, ActionClass))

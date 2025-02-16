@@ -18,7 +18,7 @@ MonoBehaviour:
   showFlatCloudControls: 0
   showFogControls: 1
   showSkyControls: 0
-  showLightingControls: 0
+  showLightingControls: 1
   showAuroraControls: 0
   showEnvironmentControls: 0
   showAudioControls: 0
@@ -28,21 +28,21 @@ MonoBehaviour:
   cloudsOverride:
     ambientLightIntensity: 1
     showLayer1: 1
-    coverageLayer1: -0.102
-    dilateCoverageLayer1: 1
+    coverageLayer1: -0.073
+    dilateCoverageLayer1: 0.423
     dilateTypeLayer1: 1
-    typeModifierLayer1: 0.8
-    anvilBiasLayer1: 0.177
-    scatteringIntensityLayer1: 0.788
-    multiScatteringALayer1: 0.541
-    multiScatteringBLayer1: 0.349
-    multiScatteringCLayer1: 0.577
-    powderIntensityLayer1: 1
+    typeModifierLayer1: 0.552
+    anvilBiasLayer1: 0.419
+    scatteringIntensityLayer1: 1.148
+    multiScatteringALayer1: 0.392
+    multiScatteringBLayer1: 0.495
+    multiScatteringCLayer1: 0.511
+    powderIntensityLayer1: 0.376
     silverLiningSpreadLayer1: 0.903
-    ligthAbsorbtionLayer1: 0.722
-    densityLayer1: 0.406
-    densitySmoothnessLayer1: 1.3
-    baseErosionIntensityLayer1: 0
+    ligthAbsorbtionLayer1: 1.326
+    densityLayer1: 0.5
+    densitySmoothnessLayer1: 1.114
+    baseErosionIntensityLayer1: 0.071
     detailErosionIntensityLayer1: 0.3
     curlIntensityLayer1: 0.3
     showLayer2: 1
@@ -75,6 +75,7 @@ MonoBehaviour:
   lightingOverride:
     directLightIntensityModifier: 1
     ambientIntensityModifier: 1
+    shadowIntensity: 0.996
   skyOverride:
     intensity: 1
     skyColorTint: {r: 1, g: 1, b: 1, a: 1}
@@ -87,7 +88,7 @@ MonoBehaviour:
     fogHeight2: 0
     fogColorBlend: 0.7
     fogColorMod: {r: 1, g: 1, b: 1, a: 1}
-    scattering: 0.3
+    scattering: 0.2
     extinction: 0.05
     anistropy: 0.5
     unityFogDensity: 0.05

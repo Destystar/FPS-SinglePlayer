@@ -8,6 +8,14 @@ namespace Enviro
     [Serializable]
     public class EnviroSky
     {
+        public enum SkyMode
+        { 
+            Normal,
+            Simple
+        }
+
+        public SkyMode skyMode;
+
         public enum MoonMode
         { 
             Realistic,
@@ -137,18 +145,12 @@ namespace Enviro
         {
             float solarTime = EnviroManager.instance.solarTime;
           
-            Shader.SetGlobalColor("_FrontColor0",Settings.frontColorGradient0.Evaluate(solarTime));
+           
             Shader.SetGlobalColor("_FrontColor1",Settings.frontColorGradient1.Evaluate(solarTime));
             Shader.SetGlobalColor("_FrontColor2",Settings.frontColorGradient2.Evaluate(solarTime));
-            Shader.SetGlobalColor("_FrontColor3",Settings.frontColorGradient3.Evaluate(solarTime));
-            Shader.SetGlobalColor("_FrontColor4",Settings.frontColorGradient4.Evaluate(solarTime));
-            Shader.SetGlobalColor("_FrontColor5",Settings.frontColorGradient5.Evaluate(solarTime));
-              
-            Shader.SetGlobalColor("_BackColor0",Settings.backColorGradient0.Evaluate(solarTime));
+            Shader.SetGlobalColor("_FrontColor5",Settings.frontColorGradient5.Evaluate(solarTime));   ;
             Shader.SetGlobalColor("_BackColor1",Settings.backColorGradient1.Evaluate(solarTime));
             Shader.SetGlobalColor("_BackColor2",Settings.backColorGradient2.Evaluate(solarTime));
-            Shader.SetGlobalColor("_BackColor3",Settings.backColorGradient3.Evaluate(solarTime));
-            Shader.SetGlobalColor("_BackColor4",Settings.backColorGradient4.Evaluate(solarTime));
             Shader.SetGlobalColor("_BackColor5",Settings.backColorGradient5.Evaluate(solarTime));
 
             Shader.SetGlobalColor("_SkyColorTint",Settings.skyColorTint); 
@@ -165,8 +167,27 @@ namespace Enviro
              
             Shader.SetGlobalFloat("_frontBackDistribution0",Settings.distribution0);
             Shader.SetGlobalFloat("_frontBackDistribution1",Settings.distribution1);
-            Shader.SetGlobalFloat("_frontBackDistribution2",Settings.distribution2);
-            Shader.SetGlobalFloat("_frontBackDistribution3",Settings.distribution3);
+
+            if (Settings.skyMode == EnviroSky.SkyMode.Simple)
+            {
+                Shader.EnableKeyword("ENVIRO_SIMPLESKY");
+            }
+            else
+            {
+                Shader.DisableKeyword("ENVIRO_SIMPLESKY");    
+                Shader.SetGlobalColor("_FrontColor0",Settings.frontColorGradient0.Evaluate(solarTime));
+                Shader.SetGlobalColor("_BackColor0",Settings.backColorGradient0.Evaluate(solarTime));
+                Shader.SetGlobalColor("_FrontColor3",Settings.frontColorGradient3.Evaluate(solarTime));
+                Shader.SetGlobalColor("_FrontColor4",Settings.frontColorGradient4.Evaluate(solarTime));
+                Shader.SetGlobalColor("_BackColor3",Settings.backColorGradient3.Evaluate(solarTime));
+                Shader.SetGlobalColor("_BackColor4",Settings.backColorGradient4.Evaluate(solarTime));
+                Shader.SetGlobalFloat("_frontBackDistribution2",Settings.distribution2);
+                Shader.SetGlobalFloat("_frontBackDistribution3",Settings.distribution3);
+                
+                if(Settings.galaxyTex != null)
+                    mat.SetTexture("_GalaxyTex",Settings.galaxyTex);
+            }
+
 
             if(Settings.moonMode == EnviroSky.MoonMode.Off)
                mat.SetVector("_SkyMoonParameters", new Vector4(Settings.moonPhase,Settings.moonScale,Settings.moonScale,0f));
@@ -179,8 +200,6 @@ namespace Enviro
             mat.SetTexture("_StarsTex",Settings.starsTex);
             if(Settings.starsTwinklingTex != null)
             mat.SetTexture("_StarsTwinklingTex",Settings.starsTwinklingTex);
-            if(Settings.galaxyTex != null)
-            mat.SetTexture("_GalaxyTex",Settings.galaxyTex);
             if(Settings.sunTex != null)
             mat.SetTexture("_SunTex",Settings.sunTex);
             if(Settings.moonTex != null)

@@ -32,6 +32,21 @@ namespace Enviro
         [Tooltip("Night length modifier will increase/decrease time progression speed at nighttime.")]
         [Range(0.1f, 10f)]
         public float nightLengthModifier = 1f;
+
+
+        public enum CalenderType
+        {
+            Realistic,
+            Custom
+        }
+
+        public CalenderType calenderType;
+        public int daysInMonth = 10;
+        public int monthsInYear = 4;
+
+        public float customSunOffset = -8f;
+        [Range(0,360)] 
+        public float customSunRotation = 0f;
     }
 
     [Serializable]
@@ -47,13 +62,14 @@ namespace Enviro
         ///////// Time
         public void SetDateTime (int sec, int min, int hours, int day, int month, int year)
         {
+            //Check for incorrect dates
             if(year == 0)
-               year = 1;
+            year = 1;
             if(month == 0)
-               month = 1;
+            month = 1;
             if(day == 0)
-               day = 1;
- 
+            day = 1;
+
             Settings.secSerial = sec;
             Settings.minSerial = min;
             Settings.hourSerial = hours;
@@ -61,38 +77,82 @@ namespace Enviro
             Settings.monthSerial = month;
             Settings.yearSerial = year;
 
-            DateTime curTime = new DateTime(1,1,1,0,0,0);
-
-            curTime = curTime.AddYears(Settings.yearSerial-1);
-            curTime = curTime.AddMonths(Settings.monthSerial-1);
-            curTime = curTime.AddDays(Settings.daySerial-1);
-            curTime = curTime.AddHours(Settings.hourSerial);
-            curTime = curTime.AddMinutes(Settings.minSerial);
-            curTime = curTime.AddSeconds(Settings.secSerial); 
-
-            //Events
-            if(EnviroManager.instance != null && EnviroManager.instance.Events != null && EnviroManager.instance.notFirstFrame && Application.isPlaying)
+            if(Settings.calenderType == EnviroTime.CalenderType.Realistic)
             {
-                if(Settings.date.Hour != curTime.Hour)
-                   EnviroManager.instance.NotifyHourPassed();
+                DateTime curTime = new DateTime(1,1,1,0,0,0);
 
-                if(Settings.date.Day != curTime.Day)
-                   EnviroManager.instance.NotifyDayPassed();
+                curTime = curTime.AddYears(Settings.yearSerial-1);
+                curTime = curTime.AddMonths(Settings.monthSerial-1);
+                curTime = curTime.AddDays(Settings.daySerial-1);
+                curTime = curTime.AddHours(Settings.hourSerial);
+                curTime = curTime.AddMinutes(Settings.minSerial);
+                curTime = curTime.AddSeconds(Settings.secSerial); 
 
-                if(Settings.date.Year != curTime.Year)
-                   EnviroManager.instance.NotifyYearPassed();
+                //Events
+                if(EnviroManager.instance != null && EnviroManager.instance.Events != null && EnviroManager.instance.notFirstFrame && Application.isPlaying)
+                {
+                    if(Settings.date.Hour != curTime.Hour)
+                    EnviroManager.instance.NotifyHourPassed();
+
+                    if(Settings.date.Day != curTime.Day)
+                    EnviroManager.instance.NotifyDayPassed();
+
+                    if(Settings.date.Year != curTime.Year)
+                    EnviroManager.instance.NotifyYearPassed();
+                }
+
+                Settings.date = curTime;
+
+                Settings.secSerial = Settings.date.Second;
+                Settings.minSerial = Settings.date.Minute;
+                Settings.hourSerial = Settings.date.Hour;
+                Settings.daySerial = Settings.date.Day;
+                Settings.monthSerial = Settings.date.Month;
+                Settings.yearSerial = Settings.date.Year; 
+    
+                Settings.timeOfDay = Settings.date.Hour + (Settings.date.Minute * 0.0166667f) + (Settings.date.Second * 0.000277778f);
             }
+            else
+            {
 
-            Settings.date = curTime;
+                if(Settings.secSerial >= 60)
+                {
+                    Settings.minSerial += 1;
+                    Settings.secSerial = 0;
+                }
 
-            Settings.secSerial = Settings.date.Second;
-            Settings.minSerial = Settings.date.Minute;
-            Settings.hourSerial = Settings.date.Hour;
-            Settings.daySerial = Settings.date.Day;
-            Settings.monthSerial = Settings.date.Month;
-            Settings.yearSerial = Settings.date.Year; 
- 
-            Settings.timeOfDay = Settings.date.Hour + (Settings.date.Minute * 0.0166667f) + (Settings.date.Second * 0.000277778f);
+                if(Settings.minSerial >= 60)
+                {
+                    Settings.hourSerial += 1;  
+                    Settings.minSerial = 0;
+                    if(EnviroManager.instance.Events != null && EnviroManager.instance.notFirstFrame && Application.isPlaying)
+                       EnviroManager.instance.NotifyHourPassed();
+                }
+
+                if(Settings.hourSerial >= 24)
+                {
+                    Settings.daySerial  += 1;
+                    Settings.hourSerial = 0;
+                    if(EnviroManager.instance.Events != null && EnviroManager.instance.notFirstFrame && Application.isPlaying)
+                       EnviroManager.instance.NotifyDayPassed();
+                }
+
+                if(Settings.daySerial > Settings.daysInMonth)
+                {
+                    Settings.monthSerial += 1;
+                    Settings.daySerial  = 1;
+                }
+
+                if(Settings.monthSerial > Settings.monthsInYear) 
+                {
+                    Settings.yearSerial += 1;
+                    Settings.monthSerial = 1;
+                    if(EnviroManager.instance.Events != null && EnviroManager.instance.notFirstFrame && Application.isPlaying)
+                       EnviroManager.instance.NotifyYearPassed();
+                }
+
+                Settings.timeOfDay = hours + (minutes * 0.0166667f) + (seconds * 0.000277778f);
+            }
         }
 
         //Time
@@ -100,11 +160,13 @@ namespace Enviro
         {
             get
             {
-                return Settings.date.Second;
+                if(Settings.calenderType == EnviroTime.CalenderType.Realistic)
+                    return Settings.date.Second;
+                else
+                    return Settings.secSerial;
             }
             set
             {
-                //Settings.secSerial = value;
                 SetDateTime(value,Settings.minSerial,Settings.hourSerial,Settings.daySerial,Settings.monthSerial,Settings.yearSerial);
             }
         }
@@ -113,11 +175,13 @@ namespace Enviro
         {
             get
             {
-                return Settings.date.Minute;
+                if(Settings.calenderType == EnviroTime.CalenderType.Realistic)
+                    return Settings.date.Minute;
+                else
+                    return Settings.minSerial;
             }
             set
             {
-                //Settings.minSerial = value;
                 SetDateTime(Settings.secSerial,value,Settings.hourSerial,Settings.daySerial,Settings.monthSerial,Settings.yearSerial);
             }
         }
@@ -126,11 +190,13 @@ namespace Enviro
         {
             get
             {
-                return Settings.date.Hour;
+                if(Settings.calenderType == EnviroTime.CalenderType.Realistic)
+                    return Settings.date.Hour;
+                else
+                    return Settings.hourSerial;
             }
             set
             {
-                //Settings.hourSerial = value;
                 SetDateTime(Settings.secSerial,Settings.minSerial,value,Settings.daySerial,Settings.monthSerial,Settings.yearSerial);
             }
         }
@@ -139,11 +205,13 @@ namespace Enviro
         {
             get
             {
-                return Settings.date.Day;
+                if(Settings.calenderType == EnviroTime.CalenderType.Realistic)
+                    return Settings.date.Day;
+                else
+                    return Settings.daySerial;
             }
             set
             {
-                //Settings.daySerial = value;
                 SetDateTime(Settings.secSerial,Settings.minSerial,Settings.hourSerial,value,Settings.monthSerial,Settings.yearSerial);
             }
         }
@@ -152,11 +220,13 @@ namespace Enviro
         {
             get
             {
-                return Settings.date.Month;
+                if(Settings.calenderType == EnviroTime.CalenderType.Realistic)
+                    return Settings.date.Month;
+                else
+                    return Settings.monthSerial;
             }
             set
             {
-               //Settings.monthSerial = value;
                SetDateTime(Settings.secSerial,Settings.minSerial,Settings.hourSerial,Settings.daySerial,value,Settings.yearSerial);
             }
         }
@@ -164,11 +234,13 @@ namespace Enviro
         {
             get
             {
-                return Settings.date.Year;
+                if(Settings.calenderType == EnviroTime.CalenderType.Realistic)
+                    return Settings.date.Year;
+                else
+                    return Settings.yearSerial;
             }
             set
             {
-                //Settings.yearSerial = value;
                 SetDateTime(Settings.secSerial,Settings.minSerial,Settings.hourSerial,Settings.daySerial,Settings.monthSerial,value);
             }
         }
@@ -178,7 +250,7 @@ namespace Enviro
         public override void UpdateModule ()
         { 
             if(!active)
-               return; 
+               return;  
 
             if(Settings.simulate && Application.isPlaying)
             {
@@ -197,24 +269,20 @@ namespace Enviro
 
                 t = (24.0f / 60.0f) / (Settings.cycleLengthInMinutes * timeProgressionModifier);           
                 t = t * 3600f * Time.deltaTime;
+ 
+                internalTimeOverflow += t;
+                seconds += (int)internalTimeOverflow;
 
-                if(t < 1f)
-                {
-                   internalTimeOverflow += t;
-                }
-                else
-                {
-                   internalTimeOverflow = t;
-                }
-
-                seconds += (int)(internalTimeOverflow);
-
-                if(internalTimeOverflow >= 1f)
-                   internalTimeOverflow = 0f; 
+                if (internalTimeOverflow >= 1f)
+                    internalTimeOverflow -= (int)internalTimeOverflow;
             } 
  
             SetDateTime(Settings.secSerial,Settings.minSerial,Settings.hourSerial,Settings.daySerial,Settings.monthSerial,Settings.yearSerial);
-            UpdateSunAndMoonPosition();
+           
+            if(Settings.calenderType == EnviroTime.CalenderType.Realistic)
+                UpdateSunAndMoonPosition();
+            else
+                UpdateCustomSunAndMoonPosition();
         }
 
 
@@ -248,6 +316,38 @@ namespace Enviro
             }
 
             CalculateStarsPosition(LST);
+        }
+
+         public void UpdateCustomSunAndMoonPosition()
+        {
+            if(EnviroManager.instance == null)
+                return;
+
+            //Rotate Sun and Moon           
+            EnviroManager.instance.sunRotationX = (Settings.timeOfDay + Settings.customSunOffset) * 15;
+            
+            if(EnviroManager.instance.sunRotationX >= 360)
+                EnviroManager.instance.sunRotationX = 0;
+
+            if(EnviroManager.instance.sunRotationX < 0)
+            EnviroManager.instance.sunRotationX = 360 + EnviroManager.instance.sunRotationX;
+
+            EnviroManager.instance.sunRotationY = Settings.customSunRotation;
+
+            EnviroManager.instance.moonRotationX = EnviroManager.instance.sunRotationX - 180;
+            
+            if(EnviroManager.instance.moonRotationX >= 360)
+                EnviroManager.instance.moonRotationX = 0; 
+
+            if(EnviroManager.instance.moonRotationX < 0)
+            EnviroManager.instance.moonRotationX = 360 + EnviroManager.instance.moonRotationX;
+
+            EnviroManager.instance.moonRotationY = EnviroManager.instance.sunRotationY;
+            EnviroManager.instance.UpdateNonTime();
+
+            //Rotate Stars
+            EnviroManager.instance.Objects.stars.transform.localRotation = EnviroManager.instance.Objects.sun.transform.localRotation;
+            Shader.SetGlobalMatrix("_StarsMatrix", EnviroManager.instance.Objects.stars.transform.worldToLocalMatrix);
         }
 
         /// <summary>

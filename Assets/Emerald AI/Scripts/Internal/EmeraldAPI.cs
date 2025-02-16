@@ -316,6 +316,8 @@ namespace EmeraldAI
                     if (EmeraldComponent.DetectionComponent.FactionRelationsList[i].FactionIndex == FactionData.FactionNameList.IndexOf(Faction))
                     {
                         EmeraldComponent.DetectionComponent.FactionRelationsList[i].RelationType = RelationType;
+                        EmeraldComponent.DetectionComponent.SetupFactions();
+                        return;
                     }
                     else
                     {
@@ -946,6 +948,52 @@ namespace EmeraldAI
         /// </summary>
         public class Internal
         {
+            /// <summary>
+            /// Generate a position within 150 degrees in front of the AI that is unobstructed of its current target, do so in no more than 10 steps.
+            /// </summary>
+            public static Vector3 FindUnobstructedPosition(EmeraldSystem EmeraldComponent)
+            {
+                if (EmeraldComponent.CoverComponent == null) return EmeraldComponent.transform.position;
+
+                int steps = 10;
+
+                for (int i = 0; i < steps; i++)
+                {
+                    int Distance = Random.Range(3, 5);
+                    float t = i / (float)(steps - 1);
+                    float angle = Mathf.Lerp(-75, 75, t);
+                    Vector3 PotentialPosition = EmeraldComponent.transform.position;
+                    if (EmeraldComponent.CoverComponent.CurrentCoverNode) PotentialPosition = Quaternion.AngleAxis(angle, EmeraldComponent.transform.up) * EmeraldComponent.CoverComponent.CurrentCoverNode.transform.forward * Distance;
+                    else PotentialPosition = Quaternion.AngleAxis(angle, EmeraldComponent.transform.up) * EmeraldComponent.transform.forward * Distance;
+                    Vector3 AIPosition = EmeraldComponent.DetectionComponent.HeadTransform.position;
+
+                    //Check if a Cover Node exists with near a PotentialPosition. If so, skip this position as we don't want AI generating positions too close to other AI or Cover Nodes.
+                    Vector3 PositionToCheck = PotentialPosition + AIPosition;
+                    PositionToCheck.y = EmeraldComponent.transform.position.y;
+                    Collider[] hitColliders = Physics.OverlapSphere(PositionToCheck, 1.5f, EmeraldComponent.CoverComponent.CoverNodeLayerMask);
+
+                    //Dev visuals
+                    //if (hitColliders.Length > 0) Debug.Log(EmeraldComponent.gameObject.name + "  -  " + hitColliders.Length);
+                    //Debug.DrawRay(EmeraldComponent.DetectionComponent.HeadTransform.position, PotentialPosition, Color.yellow, Distance);
+                    //Debug.DrawLine(PotentialPosition + AIPosition, PotentialPosition + AIPosition + EmeraldComponent.transform.up * 1, Color.cyan, Distance);
+                    //Debug.DrawLine(PotentialPosition + AIPosition, EmeraldComponent.CurrentTargetInfo.CurrentICombat.DamagePosition(), Color.black, Distance);
+
+                    if (hitColliders.Length == 0 && !Physics.Raycast(PotentialPosition + AIPosition, EmeraldComponent.CurrentTargetInfo.CurrentICombat.DamagePosition(), ~EmeraldComponent.DetectionComponent.ObstructionDetectionLayerMask))
+                    {
+                        NavMeshHit hit;
+                        if (NavMesh.SamplePosition(PotentialPosition + AIPosition, out hit, 2, NavMesh.AllAreas))
+                        {
+                            return hit.position;
+                        }
+
+                        return PotentialPosition + AIPosition;
+                    }
+                }
+
+                //If no positions can be found, just generate a random position in front of the AI.
+                return EmeraldComponent.transform.position + EmeraldComponent.transform.right * Random.Range(-2, 3) + EmeraldComponent.transform.forward * 2f;
+            }
+
             public static void GenerateRandomPositionWithinRadius(EmeraldSystem EmeraldComponent)
             {
                 //Return if the CombatTarget is null (which can happen if the CombatTarget gets cleared rght before this function gets called).

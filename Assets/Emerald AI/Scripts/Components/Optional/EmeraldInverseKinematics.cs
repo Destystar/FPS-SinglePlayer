@@ -150,7 +150,8 @@ namespace EmeraldAI
                 float Distance = Vector3.Distance(m_AimSourceParent.position, CurrentTargetPosition);
 
                 //Target is within look at and distance range.
-                if (CurrentTargetAngle <= LookAtLimit && Distance < LookDistance && !EmeraldComponent.AnimationComponent.IsStunned && !EmeraldComponent.DetectionComponent.TargetObstructed && !EmeraldComponent.AnimationComponent.IsTurning && !EmeraldComponent.AnimationComponent.IsDodging)
+                if (CurrentTargetAngle <= LookAtLimit && Distance < LookDistance && !EmeraldComponent.AnimationComponent.IsStunned && !EmeraldComponent.DetectionComponent.TargetObstructed && !EmeraldComponent.AnimationComponent.IsTurning && !EmeraldComponent.AnimationComponent.IsDodging ||
+                    CurrentTargetAngle <= 1 && Distance < LookDistance && EmeraldComponent.CoverComponent && EmeraldComponent.CoverComponent.HasCover)
                 {
                     if (Distance > 0.75f)
                     {

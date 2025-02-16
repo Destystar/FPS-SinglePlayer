@@ -2,6 +2,8 @@
 #include "VolumetricCloudsBlendInclude.cginc"
 
 #pragma multi_compile __ ENVIRO_VOLUMELIGHT
+#pragma multi_compile __ ENVIRO_SIMPLESKY
+#pragma multi_compile __ ENVIRO_SIMPLEFOG
  
 #if defined(UNITY_STEREO_INSTANCING_ENABLED) || defined(UNITY_STEREO_MULTIVIEW_ENABLED)
 UNITY_DECLARE_TEX2DARRAY(_EnviroVolumetricFogTex);
@@ -137,7 +139,7 @@ float4 GetExponentialHeightFog(float3 wPos, float linearDepth)
     viewDirection /= viewLength; 
 
     float fogAmount = 0;
-
+ 
     float CameraToReceiverLengthSqr = dot(CameraToReceiver, CameraToReceiver);
     float CameraToReceiverLengthInv = rsqrt(CameraToReceiverLengthSqr);
     float CameraToReceiverLength = CameraToReceiverLengthSqr * CameraToReceiverLengthInv;
@@ -150,7 +152,11 @@ float4 GetExponentialHeightFog(float3 wPos, float linearDepth)
     float ExponentSecond = _EnviroFogParameters2.y * (camHeightLimiter - _EnviroFogParameters2.w);
     float RayOriginTermsSecond = _EnviroFogParameters2.z * exp2(-ExponentSecond); 
 
+    #if ENVIRO_SIMPLEFOG
+    fogAmount = CalculateLineIntegral(_EnviroFogParameters.y, RayDirectionY, RayOriginTerms) * RayLength;
+    #else
     fogAmount = (CalculateLineIntegral(_EnviroFogParameters.y, RayDirectionY, RayOriginTerms) + CalculateLineIntegral(_EnviroFogParameters2.y, RayDirectionY, RayOriginTermsSecond)) * RayLength;
+    #endif
 
     //Start Distance
     if(length(CameraToReceiver) <= _EnviroFogParameters3.y)
@@ -158,18 +164,22 @@ float4 GetExponentialHeightFog(float3 wPos, float linearDepth)
         float fallOff = ClampedInverseLerp(0.0f,_EnviroFogParameters3.y, length(CameraToReceiver));
         fogAmount = fogAmount * pow(fallOff,6);
     }
-
+ 
     //Fog Zones
         
-#if defined(SHADER_API_D3D11) || defined(SHADER_API_METAL) || defined(SHADER_API_VULKAN)
-FogZones(wPos,fogAmount);
-#endif
+    #if defined(SHADER_API_D3D11) || defined(SHADER_API_METAL) || defined(SHADER_API_VULKAN)
+    FogZones(wPos,fogAmount);
+    #endif
 
     float fogfactor = max(exp2(-fogAmount), MinFogOpacity);
 
 
     // Color  
+    #if ENVIRO_SIMPLESKY
+    float4 sky = GetSkyColorSimple(viewDirection,0.005f);
+    #else
     float4 sky = GetSkyColor(viewDirection,0.005f);
+    #endif
     float3 inscatterColor = lerp(_EnviroFogColor.rgb,sky.rgb,_EnviroFogParameters3.w);
     float3 fogColor = inscatterColor * saturate(1 - fogfactor);
 

@@ -13,8 +13,6 @@ namespace Enviro
         public bool UpdateWetness = true;
         [Range(0f, 1f)]
         public float minWetness = 0f;
-        [Range(0f, 1f)]
-        public float maxWetness = 1f;
         [Header("Rain Ripples")]
         public bool UpdateRainRipples = true;
         [Header("Puddle Settings")]
@@ -37,9 +35,8 @@ namespace Enviro
             }
 
             if (UpdateWetness) {
-                float currWetness = Mathf.Clamp(EnviroManager.instance.Environment.Settings.wetness, minWetness, maxWetness);
-                Shader.SetGlobalVector("_Global_WetnessParams", new Vector2(currWetness, maxWetness));
-            }
+                Shader.SetGlobalVector("_Global_WetnessParams", new Vector2(minWetness, EnviroManager.instance.Environment.Settings.wetness));
+            } 
                 
             if (UpdatePuddles) {
                 Shader.SetGlobalFloat("_Global_PuddleParams", EnviroManager.instance.Environment.Settings.wetness);

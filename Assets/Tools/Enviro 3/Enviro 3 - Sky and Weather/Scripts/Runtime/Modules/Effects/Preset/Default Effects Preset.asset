@@ -16,21 +16,36 @@ MonoBehaviour:
   showSaveLoad: 0
   active: 1
   Settings:
+    enviroEffectSystemType: 0
     effectTypes:
-    - mySystem: {fileID: 0}
+    - myVFXGraph: {fileID: 0}
+      prefabVFXGraph: {fileID: 217644638508447475, guid: c4dc37a82cd6e96449263392be3a47b5,
+        type: 3}
+      localPositionOffsetVFXGraph: {x: 0, y: 25, z: 0}
+      localRotationOffsetVFXGraph: {x: 0, y: 0, z: 0}
+      maxEmissionVFXGraph: 25000
+      mySystem: {fileID: 0}
       name: Rain
-      prefab: {fileID: 6936246916098640434, guid: bf3881f9fe64de14597de578d2acee5d, type: 3}
+      prefab: {fileID: 6936246916098640434, guid: bf3881f9fe64de14597de578d2acee5d,
+        type: 3}
       localPositionOffset: {x: 0, y: 25, z: 0}
       localRotationOffset: {x: -90, y: 0, z: 0}
       emissionRate: 0
       maxEmission: 2000
-    - mySystem: {fileID: 0}
+    - myVFXGraph: {fileID: 0}
+      prefabVFXGraph: {fileID: 217644638508447475, guid: 208b9da0ef19ebe4c8589225a19a508f,
+        type: 3}
+      localPositionOffsetVFXGraph: {x: 0, y: 25, z: 0}
+      localRotationOffsetVFXGraph: {x: 0, y: 0, z: 0}
+      maxEmissionVFXGraph: 50000
+      mySystem: {fileID: 0}
       name: Snow
       prefab: {fileID: 1000011163096958, guid: 6ec12b7d8fc5e704fbbbe1641e4a6c56, type: 3}
       localPositionOffset: {x: 0, y: 25, z: 0}
       localRotationOffset: {x: -90, y: 0, z: 0}
       emissionRate: 0
       maxEmission: 2500
+    particeEmissionRateModifier: 1
   preset: {fileID: 0}
   showSetupControls: 0
   showEmissionControls: 0

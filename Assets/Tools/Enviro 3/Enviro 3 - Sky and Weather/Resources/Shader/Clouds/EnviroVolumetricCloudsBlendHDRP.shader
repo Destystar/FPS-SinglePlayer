@@ -169,9 +169,9 @@ Shader "Hidden/EnviroVolumetricCloudsBlendHDRP"
                 float4 cloudsColor = SAMPLE_TEXTURE2D_X_LOD(_CloudTex,sampler_CloudTex, i.uv * _HandleScales.xy, 0);
 #endif              
                 float3 sunColor = pow(_DirectLightColor.rgb,2) * 2.0f; 
-                float3 skyColor = GetSkyColor(viewDir,0.005f) * _EnviroSkyIntensity * GetCurrentExposureMultiplier();
-                float4 finalColor = float4(cloudsColor.r * sunColor + _AmbientColor, cloudsColor.a);
-
+                float3 skyColor = GetSkyColor(viewDir,0.005f);
+                float4 finalColor = float4((cloudsColor.r * sunColor + _AmbientColor) * _EnviroSkyIntensity * GetCurrentExposureMultiplier(), cloudsColor.a);
+ 
                 float atmosphericBlendFactor = saturate(exp(-cloudsColor.g / _AtmosphereColorSaturateDistance));
 
                 //if(_WorldSpaceCameraPos.y <= 2000) 

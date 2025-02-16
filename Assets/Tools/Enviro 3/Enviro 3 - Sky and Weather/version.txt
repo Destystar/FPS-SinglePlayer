@@ -1,4 +1,4 @@
-Enviro 3.0.0
+Enviro 3.2.0
 
 ----------------------------------------------------------------------------------
 v3.0.0			Initial release...
@@ -188,7 +188,6 @@ v3.1.6
 * Added new "Depth Test" option in volumetric clouds module. Activate for best performance, but could produce tiny blending artifacts at leaves for example.
 * Added new field to assign a custom weather coverage texture for volumetric clouds.
 
-
 v3.1.7
 * Added a new optional weather follow transform setting.
 * Added active boolean in each module for stopping updates when needed.
@@ -197,5 +196,21 @@ v3.1.7
 * Fixed volumetric clouds issue in new URP render graph implementation in Unity 6. (clouds stuttering when time progresses)
 * Fixed gc allocations in new URP render graph implementation in Unity 6.
 
-v3.1.7a
-* Hotfix for Unity 6 URP new rendergraph support.
+v3.2.0
+* Added VFX Graph support. Please activate in the Effects module when VFX Graph package is imported.
+* Added custom calender mode. Set how many month in a year and how many days a month has.
+* Added "simple" sky mode for lower end devices and/or better performance.
+* Added "simple" fog mode for lower end devices and/or better performance.
+* Added a new "activated" option in Enviro HDRP Renderer volume setting. Deactivate it for scene without Enviro to improve performance!
+* Added option to make ambient lighting changes be instant visible when not playing for easier tweaking.
+* Added particle emission rate modifier for quality/performance control.
+* Added snow and rain Visual Effect Graphs.
+* Impoved default snow particle effect. 
+* Couple of smaller code improvements.
+* Fixed small gc allocation in volumetric lighting mask rendering.
+* Fixed issue where all particle effects are playing for a couple frames after start.
+* Fixed blending issue with the ApplyClouds function for custom shaders.
+* Fixed URP17 new rendergraph custom fog / clouds blending functions for transparent shaders.
+* Fixed URP17 new rendergraph xr rendering issues.
+* Fixed possible command buffer error related to point/spot volumetric lighting in iOS metal.
+* Fixed fog and volumetric clouds exposure in HDRP reflection probes.

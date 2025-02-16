@@ -16,8 +16,8 @@ MonoBehaviour:
   showEffectControls: 0
   showCloudControls: 0
   showFlatCloudControls: 0
-  showFogControls: 0
-  showSkyControls: 0
+  showFogControls: 1
+  showSkyControls: 1
   showLightingControls: 0
   showAuroraControls: 0
   showEnvironmentControls: 0
@@ -65,7 +65,7 @@ MonoBehaviour:
     curlIntensityLayer2: 0.191
   flatCloudsOverride:
     cirrusCloudsAlpha: 1
-    cirrusCloudsCoverage: 0.373
+    cirrusCloudsCoverage: 0.431
     cirrusCloudsColorPower: 1.25
     flatCloudsCoverage: 1.287
     flatCloudsDensity: 1
@@ -88,7 +88,7 @@ MonoBehaviour:
     fogHeight2: 0
     fogColorBlend: 0.5
     fogColorMod: {r: 1, g: 1, b: 1, a: 1}
-    scattering: 0.453
+    scattering: 0.28
     extinction: 0.02
     anistropy: 0.19
     unityFogDensity: 0.002

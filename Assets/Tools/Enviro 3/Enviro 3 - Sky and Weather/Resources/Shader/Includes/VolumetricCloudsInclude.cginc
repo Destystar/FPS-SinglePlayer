@@ -50,7 +50,7 @@
             uniform float3 _CameraPosition;
             uniform float4 _Resolution;
             uniform float4 _Randomness;
-            uniform float _DepthTest; 
+            uniform float _EnviroDepthTest; 
             ////              
             const float env_inf = 1e10;
 
@@ -274,7 +274,7 @@
 					raymarchEnd = sceneDepth * _ProjectionParams.z;	   
 				}
 	#else
-                if(_DepthTest > 0 )
+                if(_EnviroDepthTest > 0 )
                 {
                     if (sceneDepth >= 0.99f) 
                     {	

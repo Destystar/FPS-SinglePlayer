@@ -22,7 +22,7 @@ namespace EmeraldAI.Utility
 
         //Bool
         SerializedProperty AnimationListsChangedProp, AnimationsUpdatedProp, WalkFoldout, RunFoldout, TurnFoldout, Type1CombatWalkFoldout, Type1CombatRunFoldout, Type1CombatTurnFoldout, EmotesFoldout,
-            Type2CombatWalkFoldout, Type2CombatRunFoldout, Type2CombatTurnFoldout, Type1StrafeFoldout, Type2StrafeFoldout, Type1DodgeFoldout, Type2DodgeFoldout;
+            Type2CombatWalkFoldout, Type2CombatRunFoldout, Type2CombatTurnFoldout, Type1StrafeFoldout, Type2StrafeFoldout, Type1DodgeFoldout, Type2DodgeFoldout, Type1CoverFoldout, Type2CoverFoldout;
         SerializedProperty Type1CombatAnimationsFoldout, Type2CombatAnimationsFoldout, Type1EquipsFoldout, Type2EquipsFoldout, Type1AttacksFoldout, Type2AttacksFoldout, Type1IdleFoldout, Type2IdleFoldout, NonCombatAnimationsFoldout, NonCombatIdleFoldout, NonCombatDeathFoldout,
            AnimatorSettingsFoldout, NonCombatHitFoldout, Type1HitFoldout, Type2HitFoldout, Type1BlockFoldout, Type2BlockFoldout, Type1DeathFoldout, Type2DeathFoldout;
 
@@ -63,7 +63,6 @@ namespace EmeraldAI.Utility
         void OnDisable()
         {
             Undo.undoRedoPerformed -= UndoCallback;
-
         }
 
         /// <summary>
@@ -99,6 +98,8 @@ namespace EmeraldAI.Utility
             Type2StrafeFoldout = serializedObject.FindProperty("Type2StrafeFoldout");
             Type1DodgeFoldout = serializedObject.FindProperty("Type1DodgeFoldout");
             Type2DodgeFoldout = serializedObject.FindProperty("Type2DodgeFoldout");
+            Type1CoverFoldout = serializedObject.FindProperty("Type1CoverFoldout");
+            Type2CoverFoldout = serializedObject.FindProperty("Type2CoverFoldout");
             EmotesFoldout = serializedObject.FindProperty("EmotesFoldout");
             AnimatorSettingsFoldout = serializedObject.FindProperty("AnimatorSettingsFoldout");
             NonCombatHitFoldout = serializedObject.FindProperty("NonCombatHitFoldout");
@@ -275,6 +276,8 @@ namespace EmeraldAI.Utility
                 EditorGUILayout.Space();
                 Type1DodgeAnimations(self);
                 EditorGUILayout.Space();
+                Type1CoverAnimations(self);
+                EditorGUILayout.Space();
                 Type1CombatHitAnimations(self);
                 EditorGUILayout.Space();
                 Type1BlockAnimations(self);
@@ -309,6 +312,8 @@ namespace EmeraldAI.Utility
                 Type2StrafeAnimations(self);
                 EditorGUILayout.Space();
                 Type2DodgeAnimations(self);
+                EditorGUILayout.Space();
+                Type2CoverAnimations(self);
                 EditorGUILayout.Space();
                 Type2CombatHitAnimations(self);
                 EditorGUILayout.Space();
@@ -952,6 +957,48 @@ namespace EmeraldAI.Utility
 
                 //Dodge Right
                 CustomEditorProperties.DrawAnimationClassVariables(self, self.Type2Animations.DodgeRight, "Dodge Right", "Controls the dodge animation when dodging right.", 2, false, false);
+
+                CustomEditorProperties.EndFoldoutWindowBox();
+            }
+        }
+
+        void Type1CoverAnimations(AnimationProfile self)
+        {
+            Type1CoverFoldout.boolValue = EditorGUILayout.Foldout(Type1CoverFoldout.boolValue, "Combat Cover Animations", true, FoldoutStyle);
+
+            if (Type1CoverFoldout.boolValue)
+            {
+                CustomEditorProperties.BeginFoldoutWindowBox();
+
+                CustomEditorProperties.ImportantTutorialButton("Note: An AI needs to have a Cover Component and have Cover Nodes set up in order to use its cover animations." +
+                    "Please refer to Emerlad's documentation for a tutorial on how to do this, if you haven't already done so.", "https://black-horizon-studios.gitbook.io/emerald-ai-wiki/emerald-components-optional/cover-component");
+
+                //Cover Idle
+                CustomEditorProperties.DrawAnimationClassVariables(self, self.Type1Animations.CoverIdle, "Cover Idle", "Controls the cover idle animation when an AI is actively in cover. It is recommended that this is some type of crouch animation.", 2, true, false);
+
+                //Cover Hit
+                CustomEditorProperties.DrawAnimationClassVariables(self, self.Type1Animations.CoverHit, "Cover Hit", "Controls the cover hit animation when an AI is actively in cover and gets hit.", 2, false, false);
+
+                CustomEditorProperties.EndFoldoutWindowBox();
+            }
+        }
+
+        void Type2CoverAnimations(AnimationProfile self)
+        {
+            Type2CoverFoldout.boolValue = EditorGUILayout.Foldout(Type2CoverFoldout.boolValue, "Combat Cover Animations", true, FoldoutStyle);
+
+            if (Type2CoverFoldout.boolValue)
+            {
+                CustomEditorProperties.BeginFoldoutWindowBox();
+
+                CustomEditorProperties.ImportantTutorialButton("Note: An AI needs to have a Cover Component and have Cover Nodes set up in order to use its cover animations. " +
+                    "Please refer to Emerlad's documentation for a tutorial on how to do this, if you haven't already done so.", "https://black-horizon-studios.gitbook.io/emerald-ai-wiki/emerald-components-optional/cover-component");
+
+                //Cover Idle
+                CustomEditorProperties.DrawAnimationClassVariables(self, self.Type2Animations.CoverIdle, "Cover Idle", "Controls the cover idle animation when an AI is actively in cover. It is recommended that this is some type of crouch animation.", 2, true, false);
+
+                //Cover Hit
+                CustomEditorProperties.DrawAnimationClassVariables(self, self.Type2Animations.CoverHit, "Cover Hit", "Controls the cover hit animation when an AI is actively in cover and gets hit.", 2, false, false);
 
                 CustomEditorProperties.EndFoldoutWindowBox();
             }

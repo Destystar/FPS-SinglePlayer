@@ -13,6 +13,6 @@ AssetOrigin:
   serializedVersion: 1
   productId: 236601
   packageName: Enviro 3 - Sky and Weather
-  packageVersion: 3.1.7a
-  assetPath: Assets/Enviro 3 - Sky and Weather/Scripts/Runtime/Base/Renderer/EnviroURPRenderPass.cs
-  uploadId: 696745
+  packageVersion: 3.2.0
+  assetPath: Assets/Tools/Enviro 3/Enviro 3 - Sky and Weather/Scripts/Runtime/Base/Renderer/EnviroURPRenderPass.cs
+  uploadId: 721859

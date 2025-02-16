@@ -19,6 +19,7 @@ namespace EmeraldAI
 
         public YesOrNo DrawFootstepPositions = YesOrNo.Yes;
         public YesOrNo DebugLogFootsteps = YesOrNo.Yes;
+        public YesOrNo DrawDetectedCoverNodes = YesOrNo.Yes;
         #endregion
 
         #region Private Variables
@@ -159,7 +160,8 @@ namespace EmeraldAI
             {
                 foreach (Collider C in EmeraldComponent.DetectionComponent.LineOfSightTargets.ToArray())
                 {
-                    Vector3 direction = C.bounds.center - EmeraldComponent.DetectionComponent.HeadTransform.position;
+                    Vector3 targetTop = new Vector3(C.bounds.center.x, C.bounds.max.y, C.bounds.center.z);
+                    Vector3 direction = targetTop - EmeraldComponent.DetectionComponent.HeadTransform.position;
                     Debug.DrawRay(EmeraldComponent.DetectionComponent.HeadTransform.position, direction, new Color(1, 0.549f, 0));
                 }
             }

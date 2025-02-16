@@ -111,6 +111,7 @@
                 InverseProjectDepth(depth, i.uv.xy * (1/_RTHandleScale.xy), worldPos);
  
                 float4 fog = GetExponentialHeightFog(worldPos,linearDepth); 
+                fog.rgb *= _EnviroSkyIntensity * GetCurrentExposureMultiplier();
 
                 //HDRP Fog            
                 //float3 V = GetSkyViewDirWS(i.uv.xy * _ScreenSize.xy * (1/_RTHandleScale.xy));

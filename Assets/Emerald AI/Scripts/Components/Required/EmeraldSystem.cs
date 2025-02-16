@@ -27,7 +27,7 @@ namespace EmeraldAI
     {
         #region Target Info
         //Since these are evenly used across multiple components, these are kept in the main Emerald System script.
-        public Transform CombatTarget;
+        [HideInInspector] public Transform CombatTarget;
         [HideInInspector] public Transform TargetToFollow;
         [HideInInspector] public Transform LookAtTarget;
         [HideInInspector] [SerializeField] public CurrentTargetInfoClass CurrentTargetInfo = null;
@@ -66,6 +66,7 @@ namespace EmeraldAI
         [HideInInspector] public EmeraldSoundDetector SoundDetectorComponent;
         [HideInInspector] public TargetPositionModifier TPMComponent;
         [HideInInspector] public LocationBasedDamage LBDComponent;
+        [HideInInspector] public EmeraldCover CoverComponent;
         #endregion
 
         //Initialize Emerald AI and its components
@@ -85,6 +86,7 @@ namespace EmeraldAI
             ItemsComponent = GetComponent<EmeraldItems>();
             SoundDetectorComponent = GetComponent<EmeraldSoundDetector>();
             InverseKinematicsComponent = GetComponent<EmeraldInverseKinematics>();
+            CoverComponent = GetComponent<EmeraldCover>();
             TPMComponent = GetComponent<TargetPositionModifier>();
             m_NavMeshAgent = GetComponent<NavMeshAgent>();
             AIBoxCollider = GetComponent<BoxCollider>();

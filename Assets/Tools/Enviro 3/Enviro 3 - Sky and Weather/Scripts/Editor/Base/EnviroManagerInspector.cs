@@ -47,7 +47,7 @@ namespace Enviro{
             GUILayout.BeginVertical("", boxStyle);
             GUILayout.Label("Enviro - Sky and Weather Manager",headerStyleMid);
             GUILayout.Space(5);
-            GUILayout.Label("Version: 3.1.7", headerStyleMid);
+            GUILayout.Label("Version: 3.2.0", headerStyleMid);
 
 
             //Help Box Button
@@ -472,7 +472,7 @@ namespace Enviro{
                 GUILayout.Space(5);
                 EditorGUILayout.PropertyField(onDayActions);
                 EditorGUILayout.PropertyField(onNightActions);
-                 GUILayout.EndVertical();
+                GUILayout.EndVertical();
             }
             GUILayout.EndVertical();
 

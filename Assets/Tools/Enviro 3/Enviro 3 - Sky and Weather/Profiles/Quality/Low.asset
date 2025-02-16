@@ -13,11 +13,14 @@ MonoBehaviour:
   m_Name: Low
   m_EditorClassIdentifier: 
   showEditor: 0
+  showSky: 0
   showVolumeClouds: 0
   showFog: 0
   showFlatClouds: 0
   showEffects: 0
   showAurora: 0
+  skyOverride:
+    skyMode: 1
   volumetricCloudsOverride:
     volumetricClouds: 1
     dualLayer: 0
@@ -29,6 +32,7 @@ MonoBehaviour:
     lodDistance: 0.7
   fogOverride:
     fog: 1
+    fogQualityMode: 1
     volumetrics: 0
     unityFog: 0
     quality: 0
@@ -39,3 +43,5 @@ MonoBehaviour:
   auroraOverride:
     aurora: 0
     steps: 32
+  effectsOverride:
+    particeEmissionRateModifier: 1

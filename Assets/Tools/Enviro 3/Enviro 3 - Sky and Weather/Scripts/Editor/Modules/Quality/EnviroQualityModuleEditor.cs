@@ -130,6 +130,17 @@ namespace Enviro
                             
                             EnviroQuality quality = myTarget.Settings.Qualities[i];
 
+                            q.showSky = GUILayout.Toggle(q.showSky, "Skybox", headerFoldout);
+                           
+                            if(q.showSky)
+                            {
+                                Undo.RecordObject(quality, "Quality Skybox Changed");
+                                quality.skyOverride.skyMode = (EnviroSky.SkyMode)EditorGUILayout.EnumPopup("Skybox Mode",  quality.skyOverride.skyMode);
+    
+                            }  
+                            GUILayout.EndVertical();
+
+                             GUILayout.BeginVertical("",boxStyleModified);
                             q.showVolumeClouds = GUILayout.Toggle(q.showVolumeClouds, "Volumetric Clouds", headerFoldout);
                            
                             if(q.showVolumeClouds)
@@ -155,7 +166,8 @@ namespace Enviro
                             {  
                                 Undo.RecordObject(quality, "Quality Fog Changed");
                                 quality.fogOverride.fog = EditorGUILayout.Toggle("Fog",  quality.fogOverride.fog);
-                                quality.fogOverride.volumetrics = EditorGUILayout.Toggle("Volumetrics",  quality.fogOverride.volumetrics);
+                                quality.fogOverride.fogQualityMode = (EnviroFogSettings.FogQualityMode)EditorGUILayout.EnumPopup("Fog Quality Mode", quality.fogOverride.fogQualityMode);
+                                quality.fogOverride.volumetrics = EditorGUILayout.Toggle("Volumetrics",  quality.fogOverride.volumetrics); 
                             #if !ENVIRO_HDRP
                                 quality.fogOverride.unityFog = EditorGUILayout.Toggle("Unity Fog",  quality.fogOverride.unityFog);
                             #endif
@@ -183,6 +195,17 @@ namespace Enviro
                                 Undo.RecordObject(quality, "Quality Aurora Changed");
                                 quality.auroraOverride.aurora = EditorGUILayout.Toggle("Aurora",   quality.auroraOverride.aurora);
                                 quality.auroraOverride.steps = EditorGUILayout.IntSlider("Steps",  quality.auroraOverride.steps, 6,32);
+                            }      
+                            GUILayout.EndVertical();
+
+
+                            GUILayout.BeginVertical("",boxStyleModified);
+                            q.showEffects = GUILayout.Toggle(q.showEffects, "Effects", headerFoldout);
+                           
+                            if(q.showEffects)
+                            {  
+                                Undo.RecordObject(quality, "Quality Effects Changed");
+                                quality.effectsOverride.particeEmissionRateModifier = EditorGUILayout.Slider("Particle Emission Rate Modifier",  quality.effectsOverride.particeEmissionRateModifier, 0f,2f);
                             }      
                             GUILayout.EndVertical();
 

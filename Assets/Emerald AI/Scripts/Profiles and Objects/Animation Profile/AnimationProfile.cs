@@ -49,6 +49,8 @@ namespace EmeraldAI.Utility
         public bool Type2StrafeFoldout;
         public bool Type1DodgeFoldout;
         public bool Type2DodgeFoldout;
+        public bool Type1CoverFoldout;
+        public bool Type2CoverFoldout;
         public bool AnimationProfileFoldout;
         public bool AnimatorSettingsFoldout;
 

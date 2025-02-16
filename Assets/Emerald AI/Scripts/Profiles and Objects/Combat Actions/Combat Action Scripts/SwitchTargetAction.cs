@@ -37,7 +37,17 @@ namespace EmeraldAI
         void SwitchTarget (EmeraldSystem EmeraldComponent, ActionsClass ActionClass)
         {
             if (EmeraldComponent.AnimationComponent.IsAttacking || EmeraldComponent.AIAnimator.GetBool("Attack") || EmeraldComponent.DetectionComponent.LineOfSightTargets.Count <= 1)
+            {
+                ActionClass.CooldownLengthTimer = 0;
                 return;
+            }
+
+            //Don't allow an AI to switch targets while they are moving to a cover point
+            if (EmeraldComponent.CoverComponent != null && EmeraldComponent.CoverComponent.CoverState == EmeraldCover.CoverStates.MovingToCover)
+            {
+                ActionClass.CooldownLengthTimer = 0;
+                return;
+            }
 
             EmeraldComponent.DetectionComponent.SearchForTarget(PickTargetType);
             ActionClass.CooldownLengthTimer = 0;

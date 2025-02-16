@@ -14,7 +14,7 @@ namespace Enviro
         //Direct Lighting
         private SerializedProperty updateIntervallFrames,directLightIntensityModifier,sunIntensityCurve, moonIntensityCurve, sunColorGradient, moonColorGradient, lightingMode;  
         //Ambient Lighting
-        private SerializedProperty shadowIntensity, ambientIntensityModifier,ambientMode, ambientSkyboxUpdateIntervall, ambientSkyColorGradient, ambientEquatorColorGradient, ambientGroundColorGradient, ambientIntensityCurve;
+        private SerializedProperty shadowIntensity, ambientIntensityModifier,ambientMode, ambientUpdateIntervall,ambientUpdateEveryFrame, ambientSkyColorGradient, ambientEquatorColorGradient, ambientGroundColorGradient, ambientIntensityCurve;
        
 #if ENVIRO_HDRP
         private SerializedProperty sunIntensityCurveHDRP, moonIntensityCurveHDRP, lightColorTemperatureHDRP, lightColorTintHDRP,ambientColorTintHDRP, controlExposure, sceneExposure, controlIndirectLighting, diffuseIndirectIntensity, reflectionIndirectIntensity;
@@ -47,7 +47,8 @@ namespace Enviro
             ambientGroundColorGradient = serializedObj.FindProperty("Settings.ambientGroundColorGradient");          
             ambientIntensityCurve = serializedObj.FindProperty("Settings.ambientIntensityCurve");
             ambientIntensityModifier = serializedObj.FindProperty("Settings.ambientIntensityModifier");
-            ambientSkyboxUpdateIntervall = serializedObj.FindProperty("Settings.ambientSkyboxUpdateIntervall");
+            ambientUpdateIntervall = serializedObj.FindProperty("Settings.ambientUpdateIntervall");
+            ambientUpdateEveryFrame = serializedObj.FindProperty("Settings.ambientUpdateEveryFrame");
             #if ENVIRO_HDRP
             sunIntensityCurveHDRP = serializedObj.FindProperty("Settings.sunIntensityCurveHDRP");
             moonIntensityCurveHDRP = serializedObj.FindProperty("Settings.moonIntensityCurveHDRP");
@@ -160,7 +161,9 @@ namespace Enviro
                             EditorGUILayout.PropertyField(ambientSkyColorGradient);
                             GUILayout.Space(5); 
                             EditorGUILayout.LabelField("Ambient Updates",headerStyle);
-                            EditorGUILayout.PropertyField(ambientSkyboxUpdateIntervall);  
+                            EditorGUILayout.PropertyField(ambientUpdateEveryFrame);  
+                            if (!myTarget.Settings.ambientUpdateEveryFrame)
+                            EditorGUILayout.PropertyField(ambientUpdateIntervall);  
                             GUILayout.Space(5); 
                             EditorGUILayout.LabelField("Ambient Intensity",headerStyle);
                             EditorGUILayout.PropertyField(ambientIntensityCurve);
@@ -177,7 +180,9 @@ namespace Enviro
                             EditorGUILayout.PropertyField(ambientGroundColorGradient);
                             GUILayout.Space(5); 
                             EditorGUILayout.LabelField("Ambient Updates",headerStyle);
-                            EditorGUILayout.PropertyField(ambientSkyboxUpdateIntervall);  
+                            EditorGUILayout.PropertyField(ambientUpdateEveryFrame);  
+                            if (!myTarget.Settings.ambientUpdateEveryFrame)
+                            EditorGUILayout.PropertyField(ambientUpdateIntervall);  
                             GUILayout.Space(5); 
                             EditorGUILayout.LabelField("Ambient Intensity",headerStyle);
                             EditorGUILayout.PropertyField(ambientIntensityCurve);
@@ -189,7 +194,9 @@ namespace Enviro
                         else 
                         {
                              EditorGUILayout.LabelField("Ambient Updates",headerStyle);
-                             EditorGUILayout.PropertyField(ambientSkyboxUpdateIntervall); 
+                             EditorGUILayout.PropertyField(ambientUpdateEveryFrame);  
+                             if (!myTarget.Settings.ambientUpdateEveryFrame)
+                             EditorGUILayout.PropertyField(ambientUpdateIntervall);  
                              GUILayout.Space(5); 
                              EditorGUILayout.LabelField("Ambient Intensity",headerStyle);
                              EditorGUILayout.PropertyField(ambientIntensityCurve);

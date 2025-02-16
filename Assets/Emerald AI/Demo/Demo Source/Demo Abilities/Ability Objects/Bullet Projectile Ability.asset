@@ -23,9 +23,13 @@ MonoBehaviour:
     Enabled: 0
     CooldownLength: 1
   ConditionSettings:
+    Foldout: 0
     Enabled: 0
     ConditionType: 0
-    OutnumberedThreshold: 3
+    ValueCompareType: 1
+    HighPriority: 0
+    DistanceFromTarget: 3
+    LowHealthPercentage: 60
   ChargeSettings:
     Enabled: 0
     ChargeEffect: {fileID: 0}
@@ -79,7 +83,7 @@ MonoBehaviour:
     OddsToStun: 50
     StunLength: 3
   DamageSettings:
-    Foldout: 1
+    Foldout: 0
     Enabled: 1
     UseCriticalHits: 0
     UseDamageOverTime: 0

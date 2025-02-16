@@ -4458,19 +4458,19 @@ AnimatorStateMachine:
   - {fileID: -220296187449277147}
   m_EntryTransitions: []
   m_StateMachineTransitions:
-  - first: {fileID: -2536665884750146237}
-    second: []
-  - first: {fileID: 730600788866330539}
-    second: []
+  - first: {fileID: 1107813755197954376}
+    second:
+    - {fileID: 1109675832954616432}
   - first: {fileID: 1107246348514381348}
     second:
     - {fileID: 1109954754794497168}
     - {fileID: 1109057389074400838}
     - {fileID: 1109172535629312834}
-  - first: {fileID: 1107813755197954376}
-    second:
-    - {fileID: 1109675832954616432}
   - first: {fileID: 1107970555804621890}
+    second: []
+  - first: {fileID: 730600788866330539}
+    second: []
+  - first: {fileID: -2536665884750146237}
     second: []
   m_StateMachineBehaviours: []
   m_AnyStatePosition: {x: 20, y: -1390, z: 0}
@@ -11439,7 +11439,7 @@ AnimatorState:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_Name: Warning (Type 1)
-  m_Speed: 0
+  m_Speed: 1
   m_CycleOffset: 0
   m_Transitions:
   - {fileID: 1101383668550885570}
@@ -11479,7 +11479,7 @@ AnimatorState:
   m_MirrorParameterActive: 0
   m_CycleOffsetParameterActive: 0
   m_TimeParameterActive: 0
-  m_Motion: {fileID: 0}
+  m_Motion: {fileID: 7400000, guid: e2b16d39f64d0bc429ad09c0e9d73f67, type: 3}
   m_Tag: Emote
   m_SpeedParameter: 
   m_MirrorParameter: 
@@ -11639,7 +11639,7 @@ AnimatorState:
   m_MirrorParameterActive: 0
   m_CycleOffsetParameterActive: 0
   m_TimeParameterActive: 0
-  m_Motion: {fileID: 7400050, guid: 7c3c4d895ee89ce43b0e1138cc8994e0, type: 3}
+  m_Motion: {fileID: 7400000, guid: b1c4a57ece73d404f9aebbd969b9be3a, type: 3}
   m_Tag: Emote
   m_SpeedParameter: 
   m_MirrorParameter: 
@@ -11862,7 +11862,7 @@ AnimatorState:
   m_MirrorParameterActive: 0
   m_CycleOffsetParameterActive: 0
   m_TimeParameterActive: 0
-  m_Motion: {fileID: 0}
+  m_Motion: {fileID: 7400000, guid: a6171f33082636344bca20e73cd57fe0, type: 3}
   m_Tag: Emote
   m_SpeedParameter: 
   m_MirrorParameter: 
@@ -16353,6 +16353,9 @@ AnimatorStateTransition:
   m_PrefabAsset: {fileID: 0}
   m_Name: 
   m_Conditions:
+  - m_ConditionMode: 1
+    m_ConditionEvent: Emote Trigger
+    m_EventTreshold: 0
   - m_ConditionMode: 1
     m_ConditionEvent: Emote Loop
     m_EventTreshold: 0

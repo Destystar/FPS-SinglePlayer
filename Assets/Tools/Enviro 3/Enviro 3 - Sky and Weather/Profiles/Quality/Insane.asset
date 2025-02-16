@@ -13,11 +13,14 @@ MonoBehaviour:
   m_Name: Insane
   m_EditorClassIdentifier: 
   showEditor: 0
-  showVolumeClouds: 1
-  showFog: 1
+  showSky: 0
+  showVolumeClouds: 0
+  showFog: 0
   showFlatClouds: 0
   showEffects: 0
   showAurora: 0
+  skyOverride:
+    skyMode: 0
   volumetricCloudsOverride:
     volumetricClouds: 1
     dualLayer: 0
@@ -29,6 +32,7 @@ MonoBehaviour:
     lodDistance: 1
   fogOverride:
     fog: 1
+    fogQualityMode: 0
     volumetrics: 1
     unityFog: 0
     quality: 2
@@ -39,3 +43,5 @@ MonoBehaviour:
   auroraOverride:
     aurora: 1
     steps: 32
+  effectsOverride:
+    particeEmissionRateModifier: 1

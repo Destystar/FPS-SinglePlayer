@@ -68,16 +68,34 @@ namespace EmeraldAI.Utility
             Application.OpenURL("https://black-horizon-studios.gitbook.io/emerald-ai-wiki/emerald-components-required/sounds-component");
         }
 
+        [MenuItem("Window/Emerald AI/Offical Emerald AI Wiki/Cover Component", false, 400)]
+        public static void CoverComponent()
+        {
+            Application.OpenURL("https://black-horizon-studios.gitbook.io/emerald-ai-wiki/emerald-components-optional/cover-component");
+        }
+
         [MenuItem("Window/Emerald AI/Offical Emerald AI Wiki/Debugger Component", false, 400)]
         public static void DebuggerComponent()
         {
             Application.OpenURL("https://black-horizon-studios.gitbook.io/emerald-ai-wiki/emerald-components-required/debugger-component");
         }
 
+        [MenuItem("Window/Emerald AI/Offical Emerald AI Wiki/Decal Component", false, 400)]
+        public static void DecalComponent()
+        {
+            Application.OpenURL("https://black-horizon-studios.gitbook.io/emerald-ai-wiki/emerald-components-optional/decal-component");
+        }
+
         [MenuItem("Window/Emerald AI/Offical Emerald AI Wiki/Events Component", false, 400)]
         public static void EventsComponent()
         {
             Application.OpenURL("https://black-horizon-studios.gitbook.io/emerald-ai-wiki/emerald-components-required/events-component");
+        }
+
+        [MenuItem("Window/Emerald AI/Offical Emerald AI Wiki/Footsteps Component", false, 400)]
+        public static void FootstepsComponent()
+        {
+            Application.OpenURL("https://black-horizon-studios.gitbook.io/emerald-ai-wiki/emerald-components-optional/footsteps-component");
         }
 
         [MenuItem("Window/Emerald AI/Offical Emerald AI Wiki/Inverse Kinematics Component", false, 400)]

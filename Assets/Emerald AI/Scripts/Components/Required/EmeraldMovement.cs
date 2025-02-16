@@ -77,6 +77,8 @@ namespace EmeraldAI
         public event ReachedWaypointHandler OnReachedWaypoint;
         public delegate void GeneratedWaypointHandler();
         public event GeneratedWaypointHandler OnGeneratedWaypoint;
+        public delegate void OnBackupHandler();
+        public event OnBackupHandler OnBackup;
         #endregion
 
         #region Editor Variables
@@ -454,7 +456,7 @@ namespace EmeraldAI
                         {
                             if (m_NavMeshAgent.remainingDistance > 1 && !EmeraldComponent.DetectionComponent.TargetObstructed)
                             {
-                                Vector3 Direction = new Vector3(m_NavMeshAgent.destination.x, 0, m_NavMeshAgent.destination.z) - new Vector3(transform.position.x, 0, transform.position.z);
+                                Vector3 Direction = new Vector3(m_NavMeshAgent.steeringTarget.x, 0, m_NavMeshAgent.steeringTarget.z) - new Vector3(transform.position.x, 0, transform.position.z);
                                 UpdateRotations(Direction);
                             }
                             else if (m_NavMeshAgent.remainingDistance > 1 && EmeraldComponent.DetectionComponent.TargetObstructed)
@@ -665,6 +667,22 @@ namespace EmeraldAI
         }
 
         /// <summary>
+        /// Used externally trigger the OnReachedWaypoint event.
+        /// </summary>
+        public void TriggerOnReachedWaypoint()
+        {
+            OnReachedWaypoint?.Invoke();
+        }
+
+        /// <summary>
+        /// Used externally trigger the OnGeneratedWaypoint event.
+        /// </summary>
+        public void TriggerOnGeneratedWaypoint()
+        {
+            OnGeneratedWaypoint?.Invoke();
+        }
+
+        /// <summary>
         /// A built-in function that generates a wandering destination, based on the user set WanderType from the Movement Editor. 
         /// Users can use the Custom Wander Type to generate their own destinations.
         /// </summary>
@@ -862,7 +880,14 @@ namespace EmeraldAI
 
             if (!AnimationComponent.IsBackingUp && !AnimationComponent.IsEquipping && !AnimationComponent.IsSwitchingWeapons && !EmeraldComponent.CombatComponent.DeathDelayActive && CanReachTarget && EmeraldComponent.m_NavMeshAgent.isOnNavMesh)
             {
-                m_NavMeshAgent.destination = EmeraldComponent.CombatTarget.position;
+                if (EmeraldComponent.CoverComponent == null)
+                {
+                    m_NavMeshAgent.destination = EmeraldComponent.CombatTarget.position;
+                }
+                else if (EmeraldComponent.CoverComponent.CoverState == EmeraldCover.CoverStates.Inactive && EmeraldComponent.CombatComponent.DistanceFromTarget > EmeraldComponent.CombatComponent.CurrentAttackData.AttackDistance) //1.2.1 Update NEW
+                {
+                    m_NavMeshAgent.destination = EmeraldComponent.CombatTarget.position;
+                }
             }
 
             if (!CanReachTarget && m_NavMeshAgent.isOnNavMesh)
@@ -986,6 +1011,7 @@ namespace EmeraldAI
                             RaycastHit m_BackupHit = BackupRaycast();
                             if (m_BackupHit.collider != null && m_BackupHit.distance > StoppingDistance || m_BackupHit.collider == null)
                             {
+                                OnBackup?.Invoke(); //Invoke the backup callback
                                 EmeraldComponent.AIAnimator.SetBool("Walk Backwards", true);
                                 EmeraldComponent.m_NavMeshAgent.destination = GetBackupDestination(); //Generates a backup destination that's in the opposite direction of the AI's current target.
 

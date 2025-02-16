@@ -59,6 +59,7 @@ MonoBehaviour:
   components:
   - {fileID: -2046017808112310427}
   - {fileID: 7831316389285193311}
+  - {fileID: 5659259459564499625}
 --- !u!114 &5659259459564499625
 MonoBehaviour:
   m_ObjectHideFlags: 3
@@ -72,12 +73,9 @@ MonoBehaviour:
   m_Name: EnviroHDRPSky
   m_EditorClassIdentifier: 
   active: 1
-  m_AdvancedMode: 0
   rotation:
     m_OverrideState: 0
     m_Value: 0
-    min: 0
-    max: 360
   skyIntensityMode:
     m_OverrideState: 1
     m_Value: 0
@@ -87,11 +85,9 @@ MonoBehaviour:
   multiplier:
     m_OverrideState: 0
     m_Value: 1
-    min: 0
   upperHemisphereLuxValue:
     m_OverrideState: 0
     m_Value: 1
-    min: 0
   upperHemisphereLuxColor:
     m_OverrideState: 0
     m_Value: {x: 0, y: 0, z: 0}
@@ -104,7 +100,6 @@ MonoBehaviour:
   updatePeriod:
     m_OverrideState: 0
     m_Value: 0
-    min: 0
   includeSunInBaking:
     m_OverrideState: 0
     m_Value: 0

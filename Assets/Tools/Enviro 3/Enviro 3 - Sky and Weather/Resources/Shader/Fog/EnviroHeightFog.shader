@@ -4,7 +4,7 @@
     {
         //_MainTex ("Texture", any) = "white"  {}
     }
-    SubShader
+    SubShader 
     {
         // No culling or depth
         Cull Off ZWrite Off ZTest Always
@@ -16,10 +16,9 @@
             #pragma fragment frag
             #pragma multi_compile __ ENVIROURP
             #pragma multi_compile __ UNITY_COLORSPACE_GAMMA
-            #pragma multi_compile __ ENVIRO_VOLUMELIGHT
 
             #include "UnityCG.cginc"
-            #include "../Includes/FogInclude.cginc"
+            #include_with_pragmas "../Includes/FogInclude.cginc"
   
             struct v2f
             {

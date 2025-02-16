@@ -9,12 +9,13 @@ namespace Enviro
 {
     [Serializable, VolumeComponentMenu("Post-processing/Enviro/Effects Renderer")]
     public class EnviroHDRPRenderer : CustomPostProcessVolumeComponent, IPostProcessComponent
-    {
+    { 
         public bool IsActive() => EnviroManager.instance != null;
         public override CustomPostProcessInjectionPoint injectionPoint => (CustomPostProcessInjectionPoint)0;
         private Material blitTrough;
         private List<EnviroVolumetricCloudRenderer> volumetricCloudsRender = new List<EnviroVolumetricCloudRenderer>();
         private Vector3 floatingPointOriginMod = Vector3.zero;
+        public BoolParameter activated = new(value: true); 
 
         public override void Setup()
         {
@@ -31,7 +32,7 @@ namespace Enviro
         public override void Render(CommandBuffer cmd, HDCamera camera, RTHandle source, RTHandle destination)
         {  
             //Do nothing
-            if (!EnviroHelper.CanRenderOnCamera(camera.camera) || camera.camera.cameraType == CameraType.Preview)
+            if (activated.value == false || !EnviroHelper.CanRenderOnCamera(camera.camera) || camera.camera.cameraType == CameraType.Preview)
             {
                 blitTrough.SetTexture("_InputTexture", source);
                 CoreUtils.DrawFullScreen(cmd, blitTrough);

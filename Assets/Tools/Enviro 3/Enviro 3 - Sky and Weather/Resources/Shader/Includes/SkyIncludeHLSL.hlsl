@@ -172,6 +172,34 @@ float4 Clouds2D (float3 uvs, float3 worldPos)
     return col;
 }
 
+float4 GetSkyColorSimple (float3 viewDir, float mieSize)
+{
+    float cosTheta = smoothstep(-0.25,1.15,saturate(dot(-_SunDir.xyz, viewDir)));
+    half y = -viewDir.y / 0.02;
+  
+    float3 frontBack1 = lerp(_FrontColor1.rgb,_BackColor1.rgb,cosTheta);
+    float3 frontBack2 = lerp(_FrontColor2.rgb,_BackColor2.rgb,cosTheta);
+    float3 frontBack5 = lerp(_FrontColor5.rgb,_BackColor5.rgb,cosTheta);
+
+    float heightS1 = RemapEnviro(viewDir.y,-0.75,_frontBackDistribution0,0,1);
+    float heightS2 = RemapEnviro(viewDir.y,_frontBackDistribution0,_frontBackDistribution1,0,1);
+    float heightS5 = RemapEnviro(viewDir.y,_frontBackDistribution1,1,0,1);
+ 
+    float3 sky1 = lerp(float3(0,0,0),frontBack1.rgb,heightS1);
+    float3 sky2 = lerp(sky1.rgb,frontBack2.rgb,heightS2);  
+    float3 sky5 = lerp(sky2.rgb,frontBack5.rgb,heightS5);
+
+    float3 skyColor = sky5 * _Intensity;
+ 
+    float eyeCos = dot(_SunDir.xyz, viewDir);
+	float eyeCos2 = eyeCos * eyeCos;
+    float fade = saturate(dot(_SunDir.xyz, viewDir));
+
+    float mie = Mie(eyeCos, 0.7) * _MieScatteringIntensity * fade;
+	skyColor.rgb += (mie * skyColor) * _SunColor.rgb;
+ 
+    return float4(skyColor * _SkyColorTint.rgb,1);
+}
  
 float4 GetSkyColor (float3 viewDir, float mieSize)
 {
@@ -206,47 +234,6 @@ float4 GetSkyColor (float3 viewDir, float mieSize)
     float mie = Mie(eyeCos, 0.7) * _MieScatteringIntensity * fade;
     
 	skyColor.rgb += (mie * skyColor) * _SunColor.rgb;
-
-    return float4(skyColor * _SkyColorTint.rgb,1);
-}
-
-float4 GetSkyAndCloudsColor (float3 viewDir, float mieSize)
-{
-    float cosTheta = smoothstep(-0.25,1.15,saturate(dot(-_SunDir.xyz, viewDir)));
-    half y = -viewDir.y / 0.02;
-  
-    float3 frontBack0 = lerp(_FrontColor0.rgb,_BackColor0.rgb,cosTheta);
-    float3 frontBack1 = lerp(_FrontColor1.rgb,_BackColor1.rgb,cosTheta);
-    float3 frontBack2 = lerp(_FrontColor2.rgb,_BackColor2.rgb,cosTheta);
-    float3 frontBack3 = lerp(_FrontColor3.rgb,_BackColor3.rgb,cosTheta);
-    float3 frontBack4 = lerp(_FrontColor4.rgb,_BackColor4.rgb,cosTheta);
-    float3 frontBack5 = lerp(_FrontColor5.rgb,_BackColor5.rgb,cosTheta);
-
-    float heightS1 = RemapEnviro(viewDir.y,-0.75,_frontBackDistribution0,0,1);
-    float heightS2 = RemapEnviro(viewDir.y,_frontBackDistribution0,_frontBackDistribution1,0,1);
-    float heightS3 = RemapEnviro(viewDir.y,_frontBackDistribution1,_frontBackDistribution2,0,1);
-    float heightS4 = RemapEnviro(viewDir.y,_frontBackDistribution2,_frontBackDistribution3,0,1);
-    float heightS5 = RemapEnviro(viewDir.y,_frontBackDistribution3,1,0,1);
- 
-    float3 sky1 = lerp(frontBack0.rgb,frontBack1.rgb,heightS1);
-    float3 sky2 = lerp(sky1.rgb,frontBack2.rgb,heightS2);  
-    float3 sky3 = lerp(sky2.rgb,frontBack3.rgb,heightS3); 
-    float3 sky4 = lerp(sky3.rgb,frontBack4.rgb,heightS4);
-    float3 sky5 = lerp(sky4.rgb,frontBack5.rgb,heightS5);
-
-    float3 skyColor = sky5 * _Intensity;
- 
-    float eyeCos = dot(_SunDir.xyz, viewDir);
-	float eyeCos2 = eyeCos * eyeCos;
-    float fade = saturate(dot(_SunDir.xyz, viewDir));
-
-    float mie = Mie(eyeCos, 0.7) * _MieScatteringIntensity * fade;
-    
-	skyColor.rgb += (mie * skyColor) * _SunColor.rgb;
-
-
-    float4 cirrus = CirrusClouds(viewDir);
-	skyColor.rgb = skyColor.rgb * (1 - cirrus.a) + cirrus.rgb * cirrus.a;
 
     return float4(skyColor * _SkyColorTint.rgb,1);
 }

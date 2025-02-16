@@ -25,7 +25,7 @@ MonoBehaviour:
   RunFoldout: 0
   TurnFoldout: 0
   NonCombatDeathFoldout: 0
-  NonCombatAnimationsFoldout: 1
+  NonCombatAnimationsFoldout: 0
   NonCombatIdleFoldout: 0
   NonCombatHitFoldout: 0
   EmotesFoldout: 0
@@ -33,10 +33,10 @@ MonoBehaviour:
   Type2IdleFoldout: 0
   Type1AttacksFoldout: 0
   Type2AttacksFoldout: 0
-  Type1EquipsFoldout: 1
+  Type1EquipsFoldout: 0
   Type2EquipsFoldout: 0
   Type1CombatAnimationsFoldout: 1
-  Type2CombatAnimationsFoldout: 1
+  Type2CombatAnimationsFoldout: 0
   Type1DeathFoldout: 0
   Type2DeathFoldout: 0
   Type1HitFoldout: 0
@@ -53,8 +53,10 @@ MonoBehaviour:
   Type2StrafeFoldout: 0
   Type1DodgeFoldout: 0
   Type2DodgeFoldout: 0
+  Type1CoverFoldout: 0
+  Type2CoverFoldout: 0
   AnimationProfileFoldout: 0
-  AnimatorSettingsFoldout: 0
+  AnimatorSettingsFoldout: 1
   Type1HitConditions: -1
   Type2HitConditions: -1
   Type1HitAnimationCooldown: 0.1
@@ -162,6 +164,14 @@ MonoBehaviour:
       AnimationClip: {fileID: 0}
       Mirror: 0
     Stunned:
+      AnimationSpeed: 0
+      AnimationClip: {fileID: 0}
+      Mirror: 0
+    CoverIdle:
+      AnimationSpeed: 0
+      AnimationClip: {fileID: 0}
+      Mirror: 0
+    CoverHit:
       AnimationSpeed: 0
       AnimationClip: {fileID: 0}
       Mirror: 0
@@ -276,6 +286,14 @@ MonoBehaviour:
       AnimationSpeed: 1
       AnimationClip: {fileID: 7400000, guid: 5b3833fc8bf3c7d4eb21a48c14ead54b, type: 3}
       Mirror: 0
+    CoverIdle:
+      AnimationSpeed: 1
+      AnimationClip: {fileID: 0}
+      Mirror: 0
+    CoverHit:
+      AnimationSpeed: 1
+      AnimationClip: {fileID: 0}
+      Mirror: 0
     PutAwayWeapon:
       AnimationSpeed: 1
       AnimationClip: {fileID: 1827226128182048838, guid: 13780e300249c7d4c86bf997c1941973, type: 3}
@@ -373,6 +391,14 @@ MonoBehaviour:
       Mirror: 0
     Stunned:
       AnimationSpeed: 1
+      AnimationClip: {fileID: 0}
+      Mirror: 0
+    CoverIdle:
+      AnimationSpeed: 0
+      AnimationClip: {fileID: 0}
+      Mirror: 0
+    CoverHit:
+      AnimationSpeed: 0
       AnimationClip: {fileID: 0}
       Mirror: 0
     PutAwayWeapon:

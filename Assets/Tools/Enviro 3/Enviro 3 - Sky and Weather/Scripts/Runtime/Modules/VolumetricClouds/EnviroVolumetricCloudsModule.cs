@@ -198,7 +198,7 @@ namespace Enviro
 
         private Light dirLight;
 
-        private bool offsetMoved = false;
+
         private Vector3 lastOffset = Vector3.zero;
 
         //Update Method
@@ -387,7 +387,9 @@ namespace Enviro
             dsc.vrUsage = t.vrUsage;
             dsc.width = width;
             dsc.height = height;
-
+            dsc.dimension = t.dimension;
+            dsc.volumeDepth = t.slices;
+            
             if(cameraData.camera.cameraType != CameraType.Reflection)
             {
                 if (renderer.fullBufferHandles == null || renderer.fullBufferHandles.Length != 2)
@@ -398,11 +400,6 @@ namespace Enviro
                 if (renderer.fullBufferRTHandles == null || renderer.fullBufferRTHandles.Length != 2)
                 {
                     renderer.fullBufferRTHandles = new UnityEngine.Rendering.RTHandle[2];
-                }
-
-                if (renderer.fullBuffer == null || renderer.fullBuffer.Length != 2)
-                {
-                    renderer.fullBuffer = new RenderTexture[2];
                 }
 
                 renderer.fullBufferIndex = (renderer.fullBufferIndex + 1) % 2;
@@ -978,15 +975,21 @@ namespace Enviro
             } 
         #endif
 
+            if(renderer.camera != null && renderer.camera.transform.position.y <= settingsLayer1.bottomCloudsHeight)
+            {
+                Shader.SetGlobalTexture("_EnviroClouds", Texture2D.blackTexture);
+                return;
+            }
+
         #if ENVIRO_HDRP
             if(renderer != null && renderer.fullBufferHandles != null && renderer.fullBufferHandles.Length >= 2 && renderer.fullBufferHandles[renderer.fullBufferIndex ^ 1] != null)
             {
                 Shader.SetGlobalTexture("_EnviroClouds", renderer.fullBufferHandles[renderer.fullBufferIndex ^ 1]);
             } 
         #elif ENVIRO_URP && UNITY_6000_0_OR_NEWER
-            if(renderer != null && renderer.fullBuffer != null && renderer.fullBuffer.Length >= 2 && renderer.fullBuffer[renderer.fullBufferIndex ^ 1] != null)
+            if(renderer != null && renderer.fullBufferRTHandles != null && renderer.fullBufferRTHandles.Length >= 2 && renderer.fullBufferRTHandles[renderer.fullBufferIndex ^ 1] != null)
             { 
-                Shader.SetGlobalTexture("_EnviroClouds", renderer.fullBuffer[renderer.fullBufferIndex ^ 1]);
+                Shader.SetGlobalTexture("_EnviroClouds", renderer.fullBufferRTHandles[renderer.fullBufferIndex ^ 1]);
             }
         #else
             if(renderer != null && renderer.fullBuffer != null && renderer.fullBuffer.Length >= 2 && renderer.fullBuffer[renderer.fullBufferIndex ^ 1] != null)

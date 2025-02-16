@@ -153,10 +153,13 @@ namespace Enviro
                 floatingPointOriginMod = Vector3.zero; 
 
             ////////Rendering//////////
-            SetMatrix();  
+            SetMatrix();   
 
             if(volumetricCloudsRender == null)
                volumetricCloudsRender = new EnviroVolumetricCloudRenderer();
+
+
+            volumetricCloudsRender.camera =  myCam;
 
             //Render volumetrics mask first
             if(EnviroManager.instance.Fog != null && renderFog)
