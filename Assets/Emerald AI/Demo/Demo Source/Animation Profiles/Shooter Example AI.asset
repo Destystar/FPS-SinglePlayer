@@ -31,9 +31,9 @@ MonoBehaviour:
   EmotesFoldout: 0
   Type1IdleFoldout: 0
   Type2IdleFoldout: 0
-  Type1AttacksFoldout: 0
+  Type1AttacksFoldout: 1
   Type2AttacksFoldout: 0
-  Type1EquipsFoldout: 0
+  Type1EquipsFoldout: 1
   Type2EquipsFoldout: 0
   Type1CombatAnimationsFoldout: 1
   Type2CombatAnimationsFoldout: 0
